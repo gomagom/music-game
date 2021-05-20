@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="css/game.css">
+    <title>Edit - CLOCK NOTES</title>
+</head>
+<body>
+    <div id="tool" class="split split-right">
+        <p>BPM:<input id="bpm" type="number" name="BPM" value="135" min="1.0" max="1000.0"></p>
+        <p>曲の長さ(秒):<input id="musicL" type="number" name="musicL" value="60" min="0.0" max="10000.0"></p>
+        <p>曲の開始位置(秒):<input id="musicBody" type="number" name="musicBody" value="10" min="0.0" max="10000.0"></p>
+        <p><input id="submit" type="submit" value="適用"></p>
+        <p>クオンタイズ:<select name="Quantize" id="quantize">
+            <option value="1">4分音符</option>
+            <option value="2">8分音符</option>
+            <option value="4"selected>16分音符</option>
+            <option value="8">32分音符</option>
+            <option value="3">3連符</option>
+            <option value="6">6連符</option>
+        </select></p>
+        <p>縦の縮尺:<input id="canScale" type="range" name="canScale" value="80" min="40" max="160" list="data1"></p>
+        <p>CSVエクスポート</p>
+        <p>ファイル名:<input id="fileName" type="text" name="fileName"></p>
+        <p><button type="button" onClick="convert()">CSVダウンロード</button></P>
+        <p>CSVインポート</p>
+        <p><input id="csv" type="file" name="csv" id="file"></p>
+        <p><button type="button" onclick="location.href='index.html'">ホームに戻る</button></p>
+        <datalist id="data1">
+            <option value="80"></option>
+        </datalist>
+    </div>
+    <div id="scroll" class="split split-left">
+        <canvas id="can2"></canvas>
+    </div>
+    <script src="js/editLane.js"></script>
+    <script src="js/QuarterLine.js"></script>
+    <script src="js/XthLine.js"></script>
+    <script src="js/editor.js"></script>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="css/game.css">
+    <title>Play - CLOCK NOTES</title>
+</head>
+<body>
+    <canvas id="can"></canvas>
+    <!-- <iframe src="sound/muon.mp3" allow="autoplay" id="audio" style="display:none"></iframe> -->
+    <audio id="bgm1" src="sound/BGM_d1.mp3" preload></audio>
+    <audio id="se_hit" src="sound/se_hit.mp3" preload></audio>
+    <audio id="se_bad" src="sound/se_bad.mp3" preload></audio>
+    <div id="menu" class>
+        <ul>
+            <li><button id="btn-back" class="btn-main">続ける</button></li>
+            <li><a href="game.html" class="btn-main">やり直す</a></li>
+            <li><a href="index.html" class="btn-main">曲セレクトに戻る</a></li>
+        </ul>
+    </div>
+    <script src="js/note.js"></script>
+    <script src="js/longNote.js"></script>
+    <script src="js/backLane.js"></script>
+    <script src="js/border.js"></script>
+    <script src="js/game.js"></script>
+</body>
+</html>
