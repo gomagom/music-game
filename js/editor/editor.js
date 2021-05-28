@@ -136,22 +136,20 @@ infoSubmit.addEventListener('click', apply);
 
 //適用処理
 async function apply() {
-    return new Promise(function(resolve) {
-        bpm = document.getElementById('bpm').value;
-        musicL = document.getElementById('musicL').value;
-        musicBody = document.getElementById('musicBody').value;
-        speed = document.getElementById("speed").value;
-        noteValue = 60000 / bpm; //4分音符の長さ
-        note32Value = noteValue / 8;
-        note6Value = noteValue / 6;
-        await numberQLine();
-        await setCanvas();
-        await setQLine();
-        await setXLine();
-        await update();
-        await draw();
-        resolve();
-    })
+    bpm = document.getElementById('bpm').value;
+    musicL = document.getElementById('musicL').value;
+    musicBody = document.getElementById('musicBody').value;
+    speed = document.getElementById("speed").value;
+    noteValue = 60000 / bpm; //4分音符の長さ
+    note32Value = noteValue / 8;
+    note6Value = noteValue / 6;
+    await numberQLine();
+    await setCanvas();
+    await setQLine();
+    await setXLine();
+    await update();
+    await draw();
+    resolve();
 }
 
 //クオンタイズセレクトボックス
