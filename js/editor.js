@@ -255,7 +255,7 @@ function createAndDownloadCsv() {
     musicL +
     "," +
     musicBody +
-    "\n" +
+    "\r\n" +
     outInfo.map((record) => record.join(",")).join("\r\n");
   let blob = new Blob([bom, data], { type: "text/csv" });
 
@@ -288,7 +288,7 @@ csvFile.addEventListener(
     var reader = new FileReader();
     // ファイル読み込みに成功したときの処理
     reader.onload = function () {
-      var cols = reader.result.split("\n");
+      var cols = reader.result.split("\r\n");
       var data = [];
       for (var i = 0; i < cols.length; i++) {
         data[i] = cols[i].split(",");
