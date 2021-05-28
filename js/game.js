@@ -75,7 +75,7 @@ let note = [];
 
 function getCSV() {
     var req = new XMLHttpRequest(); // HTTPでファイルを読み込むためのXMLHttpRrequestオブジェクトを生成
-    req.open("get", "sheet/sample.csv", true); // アクセスするファイルを指定
+    req.open("get", "sheet/sample1.csv", true); // アクセスするファイルを指定
     req.send(null); // HTTPリクエストの発行
 
     // レスポンスが返ってきたらconvertCSVtoArray()を呼ぶ	
