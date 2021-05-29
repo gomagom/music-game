@@ -1,5 +1,4 @@
 //曲情報
-let bpm = 135;
 let musicL = 60;
 let musicBody = 10;
 
@@ -59,7 +58,7 @@ for (let i = 0; i < 5; i++) {
 let quarterLine = [];
 let qLineQty; //4部音符線の数
 
-function numberQLine() {
+function numberQLine(bpm) {
     return new Promise(function(resolve) {
         qLineQty = musicL / (60 / bpm) + 1;
         qLineQty = Math.floor(qLineQty);
@@ -135,13 +134,14 @@ infoSubmit.addEventListener('click', apply);
 
 //適用処理
 async function apply() {
-    bpm = document.getElementById('bpm').value;
+    const bpm = document.getElementById('bpm').value;
     musicL = document.getElementById('musicL').value;
     musicBody = document.getElementById('musicBody').value;
     noteValue = 60000 / bpm; //4分音符の長さ
     note32Value = noteValue / 8;
     note6Value = noteValue / 6;
-    await numberQLine();
+
+    await numberQLine(bpm);
     await setCanvas();
     await setQLine();
     await setXLine();
@@ -217,6 +217,7 @@ async function convert() {
     const fileName = document.getElementById('fileName').value;
     const speed = document.getElementById("speed").value;
 
+
     const outInfo = Array()
     xLine.forEach((val1, i) => {
         val1.forEach((val2, j) => {
@@ -233,6 +234,7 @@ async function convert() {
 
 //CSV出力
 function createAndDownloadCsv(fileName, outInfo) {
+    const bpm = document.getElementById('bpm').value;
     const bom = new Uint8Array([0xEF, 0xBB, 0xBF]);
     const data = fileName + "," + bpm + "," + musicL + "," + musicBody + "\r\n" + outInfo.map((record) => record.join(',')).join('\r\n');
     const blob = new Blob([ bom, data ], { 'type' : 'text/csv' });
@@ -383,8 +385,10 @@ function draw() {
 
 //オンロードでゲーム開始
 window.onload = async function() {
+    const bpm = document.getElementById('bpm').value;
+
     await getWidth();
-    await numberQLine();
+    await numberQLine(bpm);
     await setCanvas();
     await setQLine();
     await setXLine();
