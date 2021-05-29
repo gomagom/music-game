@@ -223,7 +223,7 @@ async function convert() {
             val2.forEach((val3, k) => {
                 if (val3.note) {
                     const tmp = k < 8 ? calcNote(j, k * note32Value) : calcNote(j, k % 8 * note6Value)
-                    outInfo.push(1, i+1, speed, tmp)
+                    outInfo.push(Array(1, i+1, speed, tmp))
                 }
             })
         })
