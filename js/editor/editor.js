@@ -138,7 +138,6 @@ async function apply() {
     bpm = document.getElementById('bpm').value;
     musicL = document.getElementById('musicL').value;
     musicBody = document.getElementById('musicBody').value;
-    speed = document.getElementById("speed").value;
     noteValue = 60000 / bpm; //4分音符の長さ
     note32Value = noteValue / 8;
     note6Value = noteValue / 6;
@@ -209,33 +208,31 @@ function checkHit(lane, y, set, margin) {
 }
 
 //出力用のデータに変換
+// 用途がよくわからないので関数名は適当です
+function calcNote(j, calced) {
+    return Math.round((j * noteValue + calced + musicBody * 1000) * 100) / 100;
+}
 async function convert() {
     await apply();
     const fileName = document.getElementById('fileName').value;
-    var count = 0;
-    for (let i = 0; i < xLine.length; i++) {
-        for (let j = 0; j < xLine[i].length; j++) {
-            for (let k = 0; k < xLine[i][j].length; k++) {
-                if (xLine[i][j][k].note) {
-                    outInfo[count] = [];
-                    outInfo[count][0] = 1;
-                    outInfo[count][1] = i + 1;
-                    outInfo[count][2] = speed;
-                    if (k < 8) {
-                        outInfo[count][3] = Math.round((j * noteValue + k * note32Value + musicBody * 1000) * 100) / 100;
-                    } else {
-                        outInfo[count][3] = Math.round((j * noteValue + k % 8 * note6Value + musicBody * 1000) * 100) / 100;
-                    }
-                    count++;
+    const speed = document.getElementById("speed").value;
+
+    const outInfo = Array()
+    xLine.forEach((val1, i) => {
+        val1.forEach((val2, j) => {
+            val2.forEach((val3, k) => {
+                if (val3.note) {
+                    const tmp = k < 8 ? calcNote(j, k * note32Value) : calcNote(j, k % 8 * note6Value)
+                    outInfo.push(1, i+1, speed, tmp)
                 }
-            }
-        }
-    }
-    createAndDownloadCsv(fileName);
+            })
+        })
+    })
+    createAndDownloadCsv(fileName, outInfo);
 }
 
 //CSV出力
-function createAndDownloadCsv(fileName) {
+function createAndDownloadCsv(fileName, outInfo) {
     const bom = new Uint8Array([0xEF, 0xBB, 0xBF]);
     const data = fileName + "," + bpm + "," + musicL + "," + musicBody + "\r\n" + outInfo.map((record) => record.join(',')).join('\r\n');
     const blob = new Blob([ bom, data ], { 'type' : 'text/csv' });
