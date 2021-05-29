@@ -2,7 +2,6 @@
 let bpm = 135;
 let musicL = 60;
 let musicBody = 10;
-let fileName;
 
 //csvファイル
 let csvFile = document.getElementById('csv');
@@ -212,7 +211,7 @@ function checkHit(lane, y, set, margin) {
 //出力用のデータに変換
 async function convert() {
     await apply();
-    fileName = document.getElementById('fileName').value;
+    const fileName = document.getElementById('fileName').value;
     var count = 0;
     for (let i = 0; i < xLine.length; i++) {
         for (let j = 0; j < xLine[i].length; j++) {
@@ -232,11 +231,11 @@ async function convert() {
             }
         }
     }
-    createAndDownloadCsv();
+    createAndDownloadCsv(fileName);
 }
 
 //CSV出力
-function createAndDownloadCsv() {
+function createAndDownloadCsv(fileName) {
     const bom = new Uint8Array([0xEF, 0xBB, 0xBF]);
     const data = fileName + "," + bpm + "," + musicL + "," + musicBody + "\r\n" + outInfo.map((record) => record.join(',')).join('\r\n');
     const blob = new Blob([ bom, data ], { 'type' : 'text/csv' });
