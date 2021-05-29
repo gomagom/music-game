@@ -334,13 +334,9 @@ function update() {
     
         noteW = laneMargin / 3;
     
-        for (let i = 0; i < qLineQty; i++) {
-            quarterLine[i].update();
-        }
+        quarterLine.forEach((val) => val.update() )
     
-        for (let i = 0; i < editLane.length; i++) {
-            editLane[i].update();
-        }
+        editLane.forEach((val) => val.update() )
     
         for (let i = 0; i < 4; i++) {
             for (let j = 0; j < qLineQty; j++) {
