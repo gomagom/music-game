@@ -149,7 +149,7 @@ async function apply() {
     await setXLine();
     await update();
     await draw();
-    resolve();
+    return Promise.resolve();
 }
 
 //クオンタイズセレクトボックス
@@ -237,11 +237,11 @@ async function convert() {
 
 //CSV出力
 function createAndDownloadCsv() {
-    let bom = new Uint8Array([0xEF, 0xBB, 0xBF]);
-    let data = fileName + "," + bpm + "," + musicL + "," + musicBody + "\r\n" + outInfo.map((record) => record.join(',')).join('\r\n');
-    let blob = new Blob([ bom, data ], { 'type' : 'text/csv' });
+    const bom = new Uint8Array([0xEF, 0xBB, 0xBF]);
+    const data = fileName + "," + bpm + "," + musicL + "," + musicBody + "\r\n" + outInfo.map((record) => record.join(',')).join('\r\n');
+    const blob = new Blob([ bom, data ], { 'type' : 'text/csv' });
 
-    let downloadLink = document.createElement('a');
+    const downloadLink = document.createElement('a');
     downloadLink.download = fileName + '.csv';
     downloadLink.href = URL.createObjectURL(blob);
     downloadLink.dataset.downloadurl = ['text/plain', downloadLink.download, downloadLink.href].join(':');
@@ -250,29 +250,31 @@ function createAndDownloadCsv() {
 
 //CSVインポートを検知
 csvFile.addEventListener('change', function(e) {
-    // ファイル情報を取得
-    var fileData = e.target.files[0];
-    console.log(fileData); // 取得した内容の確認用
+    try {
+        // ファイル情報を取得
+        const fileData = e.target.files[0];
+        console.log(fileData); // 取得した内容の確認用
 
-    // CSVファイル以外は処理を止める
-    if(!fileData.name.match('.csv$')) {
-        alert('CSVファイルを選択してください');
-        return;
-    }
-
-    // FileReaderオブジェクトを使ってファイル読み込み
-    var reader = new FileReader();
-    // ファイル読み込みに成功したときの処理
-    reader.onload = function() {
-        var cols = reader.result.split('\r');
-        var data = [];
-        for (var i = 0; i < cols.length; i++) {
-            data[i] = cols[i].split(',');
+        // CSVファイル以外は処理を止める
+        if(!fileData.name.match('.csv$')) {
+            throw 'CSVファイルを選択してください'
         }
-        csvReflect(data);
+
+        // FileReaderオブジェクトを使ってファイル読み込み
+        const reader = new FileReader();
+        // ファイル読み込みに成功したときの処理
+        reader.onload = function() {
+            const cols = reader.result.split('\r');
+            const data = cols.map((val => val.split(',')))
+
+            csvReflect(data);
+        }
+        // ファイル読み込みを実行
+        reader.readAsText(fileData);
+    } catch(err) {
+        alert(err)
+        return
     }
-    // ファイル読み込みを実行
-    reader.readAsText(fileData);
 }, false);
 
 //csvファイルをエディタに反映
