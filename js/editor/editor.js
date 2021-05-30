@@ -3,7 +3,6 @@ let canvasW;
 let canvasH;
 
 //レーンの線の位置
-let laneMargin;
 let laneSet;
 
 //4部音符線同士のマージン
@@ -25,30 +24,22 @@ const LINE_T = 2;
 let mouseDownX;
 let mouseDownY;
 
-//ボタン
-let infoSubmit = document.getElementById('submit');
 
 //キャンバス
-let can = document.getElementById("can2");
-let ctx = can.getContext("2d");
-let cst = window.getComputedStyle(can);
+const can = document.getElementById("can2");
+const ctx = can.getContext("2d");
 can.setAttribute('style', 'background-color: #f6f7d7');
 
 //レーンの線の実体
-let editLane = [];
-
-for (let i = 0; i < 5; i++) {
-    editLane[i] = new EditLane(i);
-}
+const editLane = Array(5).fill().map((_, idx) => new EditLane(idx))
 
 //4部音符線の実体
-let quarterLine = [];
+const quarterLine = [];
 let qLineQty; //4部音符線の数
 
 function numberQLine(bpm, musicL) {
     return new Promise(function(resolve) {
-        qLineQty = musicL / (60 / bpm) + 1;
-        qLineQty = Math.floor(qLineQty);
+        qLineQty = Math.floor(musicL / (60 / bpm) + 1);
         resolve();
     })
 }
@@ -117,6 +108,7 @@ function pos(e) {
 }
 
 //適用ボタン検知
+const infoSubmit = document.getElementById('submit');
 infoSubmit.addEventListener('click', apply);
 
 //適用処理
@@ -133,7 +125,7 @@ async function apply() {
 }
 
 //クオンタイズセレクトボックス
-let quantizeSelect = document.getElementById('quantize');
+const quantizeSelect = document.getElementById('quantize');
 
 quantizeSelect.onchange = async function() {
     divValue = this.value;
@@ -142,8 +134,7 @@ quantizeSelect.onchange = async function() {
 }
 
 //縮尺変更
-let canScale = document.getElementById('canScale');
-
+const canScale = document.getElementById('canScale');
 canScale.onchange = async function() {
     qLineMargin = this.value;
     await setCanvas();
@@ -155,7 +146,7 @@ canScale.onchange = async function() {
 //横幅のpxを取得
 function getWidth() {
     return new Promise(function(resolve) {
-        cst = window.getComputedStyle(can);
+        const cst = window.getComputedStyle(can);
         canvasW = parseInt(cst.width);
         can.width = canvasW;
         console.log(canvasW);
@@ -314,7 +305,7 @@ function update() {
             noteH = Q_LINE_T;
         }
     
-        laneMargin = canvasW / 5;
+        const laneMargin = canvasW / 5;
         laneSet = [laneMargin / 2, laneMargin * 1.5, laneMargin * 2.5, laneMargin * 3.5, laneMargin * 4.5];
     
         noteW = laneMargin / 3;
@@ -352,9 +343,7 @@ function draw() {
             quarterLine[i].draw();
         }
 
-        for (let i = 0; i < editLane.length; i++) {
-            editLane[i].draw();
-        }
+        editLane.forEach((val) => val.draw())
 
         for (let i = 0; i < 4; i++) {
             for (let j = 0; j < qLineQty; j++) {
