@@ -1,24 +1,8 @@
-//曲情報
-let bpm = 135;
-let musicL = 60;
-let musicBody = 10;
-let fileName;
-
-//csvファイル
-let csvFile = document.getElementById('csv');
-
-//出力情報
-let noteValue; //4分音符
-let note32Value; //32分音符
-let note6Value; //6連符
-var outInfo = []; //種類、レーン番号、速度、時間
-
 //キャンバスサイズ
 let canvasW;
 let canvasH;
 
 //レーンの線の位置
-let laneMargin;
 let laneSet;
 
 //4部音符線同士のマージン
@@ -40,30 +24,22 @@ const LINE_T = 2;
 let mouseDownX;
 let mouseDownY;
 
-//ボタン
-let infoSubmit = document.getElementById('submit');
 
 //キャンバス
-let can = document.getElementById("can2");
-let ctx = can.getContext("2d");
-let cst = window.getComputedStyle(can);
+const can = document.getElementById("can2");
+const ctx = can.getContext("2d");
 can.setAttribute('style', 'background-color: #f6f7d7');
 
 //レーンの線の実体
-let editLane = [];
-
-for (let i = 0; i < 5; i++) {
-    editLane[i] = new EditLane(i);
-}
+const editLane = Array(5).fill().map((_, idx) => new EditLane(idx))
 
 //4部音符線の実体
-let quarterLine = [];
+const quarterLine = [];
 let qLineQty; //4部音符線の数
 
-function numberQLine() {
+function numberQLine(bpm, musicL) {
     return new Promise(function(resolve) {
-        qLineQty = musicL / (60 / bpm) + 1;
-        qLineQty = Math.floor(qLineQty);
+        qLineQty = Math.floor(musicL / (60 / bpm) + 1);
         resolve();
     })
 }
@@ -132,28 +108,24 @@ function pos(e) {
 }
 
 //適用ボタン検知
+const infoSubmit = document.getElementById('submit');
 infoSubmit.addEventListener('click', apply);
 
 //適用処理
 async function apply() {
-    bpm = document.getElementById('bpm').value;
-    musicL = document.getElementById('musicL').value;
-    musicBody = document.getElementById('musicBody').value;
-    speed = document.getElementById("speed").value;
-    noteValue = 60000 / bpm; //4分音符の長さ
-    note32Value = noteValue / 8;
-    note6Value = noteValue / 6;
-    await numberQLine();
+    const {bpm, musicL} = getMusicInfoViaElement()
+
+    await numberQLine(bpm, musicL);
     await setCanvas();
     await setQLine();
     await setXLine();
     await update();
     await draw();
-    resolve();
+    return Promise.resolve();
 }
 
 //クオンタイズセレクトボックス
-let quantizeSelect = document.getElementById('quantize');
+const quantizeSelect = document.getElementById('quantize');
 
 quantizeSelect.onchange = async function() {
     divValue = this.value;
@@ -162,8 +134,7 @@ quantizeSelect.onchange = async function() {
 }
 
 //縮尺変更
-let canScale = document.getElementById('canScale');
-
+const canScale = document.getElementById('canScale');
 canScale.onchange = async function() {
     qLineMargin = this.value;
     await setCanvas();
@@ -175,7 +146,7 @@ canScale.onchange = async function() {
 //横幅のpxを取得
 function getWidth() {
     return new Promise(function(resolve) {
-        cst = window.getComputedStyle(can);
+        const cst = window.getComputedStyle(can);
         canvasW = parseInt(cst.width);
         can.width = canvasW;
         console.log(canvasW);
@@ -210,38 +181,38 @@ function checkHit(lane, y, set, margin) {
 }
 
 //出力用のデータに変換
+// 用途がよくわからないので関数名は適当です
+function calcNote(jnoteValue, calced, musicBody) {
+    return Math.round((jnoteValue + calced + musicBody * 1000) * 100) / 100;
+}
 async function convert() {
     await apply();
-    fileName = document.getElementById('fileName').value;
-    var count = 0;
-    for (let i = 0; i < xLine.length; i++) {
-        for (let j = 0; j < xLine[i].length; j++) {
-            for (let k = 0; k < xLine[i][j].length; k++) {
-                if (xLine[i][j][k].note) {
-                    outInfo[count] = [];
-                    outInfo[count][0] = 1;
-                    outInfo[count][1] = i + 1;
-                    outInfo[count][2] = speed;
-                    if (k < 8) {
-                        outInfo[count][3] = Math.round((j * noteValue + k * note32Value + musicBody * 1000) * 100) / 100;
-                    } else {
-                        outInfo[count][3] = Math.round((j * noteValue + k % 8 * note6Value + musicBody * 1000) * 100) / 100;
-                    }
-                    count++;
+    const fileName = document.getElementById('fileName').value;
+    const speed = document.getElementById("speed").value;
+    const {bpm, musicL, musicBody} = getMusicInfoViaElement()
+    const {noteValue, note32Value, note6Value} = calcNoteValue(bpm)
+
+    const outInfo = Array()
+    xLine.forEach((val1, i) => {
+        val1.forEach((val2, j) => {
+            val2.forEach((val3, k) => {
+                if (val3.note) {
+                    const tmp = k < 8 ? calcNote(j * noteValue, k * note32Value, musicBody) : calcNote(j * noteValue, k % 8 * note6Value, musicBody)
+                    outInfo.push(Array(1, i+1, speed, tmp))
                 }
-            }
-        }
-    }
-    createAndDownloadCsv();
+            })
+        })
+    })
+    createAndDownloadCsv(fileName, outInfo, bpm, musicL, musicBody);
 }
 
 //CSV出力
-function createAndDownloadCsv() {
-    let bom = new Uint8Array([0xEF, 0xBB, 0xBF]);
-    let data = fileName + "," + bpm + "," + musicL + "," + musicBody + "\r\n" + outInfo.map((record) => record.join(',')).join('\r\n');
-    let blob = new Blob([ bom, data ], { 'type' : 'text/csv' });
+function createAndDownloadCsv(fileName, outInfo, bpm, musicL, musicBody) {
+    const bom = new Uint8Array([0xEF, 0xBB, 0xBF]);
+    const data = fileName + "," + bpm + "," + musicL + "," + musicBody + "\r\n" + outInfo.map((record) => record.join(',')).join('\r\n');
+    const blob = new Blob([ bom, data ], { 'type' : 'text/csv' });
 
-    let downloadLink = document.createElement('a');
+    const downloadLink = document.createElement('a');
     downloadLink.download = fileName + '.csv';
     downloadLink.href = URL.createObjectURL(blob);
     downloadLink.dataset.downloadurl = ['text/plain', downloadLink.download, downloadLink.href].join(':');
@@ -249,30 +220,33 @@ function createAndDownloadCsv() {
 }
 
 //CSVインポートを検知
+const csvFile = document.getElementById('csv');
 csvFile.addEventListener('change', function(e) {
-    // ファイル情報を取得
-    var fileData = e.target.files[0];
-    console.log(fileData); // 取得した内容の確認用
+    try {
+        // ファイル情報を取得
+        const fileData = e.target.files[0];
+        console.log(fileData); // 取得した内容の確認用
 
-    // CSVファイル以外は処理を止める
-    if(!fileData.name.match('.csv$')) {
-        alert('CSVファイルを選択してください');
-        return;
-    }
-
-    // FileReaderオブジェクトを使ってファイル読み込み
-    var reader = new FileReader();
-    // ファイル読み込みに成功したときの処理
-    reader.onload = function() {
-        var cols = reader.result.split('\r');
-        var data = [];
-        for (var i = 0; i < cols.length; i++) {
-            data[i] = cols[i].split(',');
+        // CSVファイル以外は処理を止める
+        if(!fileData.name.match('.csv$')) {
+            throw 'CSVファイルを選択してください'
         }
-        csvReflect(data);
+
+        // FileReaderオブジェクトを使ってファイル読み込み
+        const reader = new FileReader();
+        // ファイル読み込みに成功したときの処理
+        reader.onload = function() {
+            const cols = reader.result.split('\r');
+            const data = cols.map((val => val.split(',')))
+
+            csvReflect(data);
+        }
+        // ファイル読み込みを実行
+        reader.readAsText(fileData);
+    } catch(err) {
+        alert(err)
+        return
     }
-    // ファイル読み込みを実行
-    reader.readAsText(fileData);
 }, false);
 
 //csvファイルをエディタに反映
@@ -288,14 +262,16 @@ async function csvReflect(data) {
     document.getElementById('musicL').value = data[0][2];
     document.getElementById('musicBody').value = data[0][3];
     document.getElementById('speed').value = data[1][2];
+
     await apply();
-    await csvMatch(data);
+    await csvMatch(data, data[0][3], data[0][1]);
     await update();
     await draw();
 }
 
 //csvのデータを入れ込む
-function csvMatch(data) {
+function csvMatch(data, musicBody, bpm) {
+    const {noteValue, note32Value, note6Value} = calcNoteValue(bpm)
     return new Promise(function(resolve) {
         for (let i = 1; i < data.length; i++) {
             var flg = false;
@@ -329,7 +305,7 @@ function update() {
             noteH = Q_LINE_T;
         }
     
-        laneMargin = canvasW / 5;
+        const laneMargin = canvasW / 5;
         laneSet = [laneMargin / 2, laneMargin * 1.5, laneMargin * 2.5, laneMargin * 3.5, laneMargin * 4.5];
     
         noteW = laneMargin / 3;
@@ -367,9 +343,7 @@ function draw() {
             quarterLine[i].draw();
         }
 
-        for (let i = 0; i < editLane.length; i++) {
-            editLane[i].draw();
-        }
+        editLane.forEach((val) => val.draw())
 
         for (let i = 0; i < 4; i++) {
             for (let j = 0; j < qLineQty; j++) {
@@ -383,10 +357,28 @@ function draw() {
     })
 }
 
+function getMusicInfoViaElement() {
+    const bpm = document.getElementById('bpm').value;
+    const musicL = document.getElementById('musicL').value;
+    const musicBody = document.getElementById('musicBody').value;
+
+    return {bpm, musicL, musicBody}
+}
+
+function calcNoteValue(bpm) {
+    const noteValue = 60000 / bpm; //4分音符の長さ
+    const note32Value = noteValue / 8;
+    const note6Value = noteValue / 6;
+    
+    return {noteValue, note32Value, note6Value}
+}
+
 //オンロードでゲーム開始
 window.onload = async function() {
+    const {bpm, musicL} = getMusicInfoViaElement()
+
     await getWidth();
-    await numberQLine();
+    await numberQLine(bpm, musicL);
     await setCanvas();
     await setQLine();
     await setXLine();
