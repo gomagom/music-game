@@ -48,6 +48,7 @@ class Note {
                         this.live++;
                         combo++;
                         perfect++;
+                        score+=1000;
                         isHit[this.lane] = false;
                     } else if (checkHit(this.py, this.greatHit, border.py)) {
                         SE_HIT.currentTime = 0;
@@ -55,6 +56,7 @@ class Note {
                         this.live++;
                         combo++;
                         great++;
+                        score+=500;
                         isHit[this.lane] = false;
                     } else if (checkHit(this.py, this.goodHit, border.py)) {
                         SE_HIT.currentTime = 0;
@@ -62,6 +64,7 @@ class Note {
                         this.live++;
                         combo++;
                         good++;
+                        score+=100;
                         isHit[this.lane] = false;
                     } else if (checkHit(this.py, this.badHit, border.py)) {
                         SE_BAD.currentTime = 0;
