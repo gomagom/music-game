@@ -1,8 +1,14 @@
-function getLanePosition(laneNo) {
-    return (CANVAS_W - LANE.width * 4 - LANE.margin * 3 + LANE.width) / 2 + (LANE.width + LANE.margin) * laneNo;
+function checkHit(hitTime, range) {
+    if (Math.abs(elapsedTime - hitTime) <= range) {
+        return true;
+    } else {
+        return false;
+    }
 }
 
-function getLaneKey(laneNo) {
-    const key = ['d', 'f', 'j', 'k'];
-    return key[laneNo];
+function calcElapsedTime() {
+    elapsedTimeAll = Date.now() - startTime;
+    elapsedTime = elapsedTimeAll - stoppedTime;
 }
+
+function 

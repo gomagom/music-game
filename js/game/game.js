@@ -4,7 +4,10 @@ const CAN = document.getElementById("can");
 const CTX = CAN.getContext("2d");
 const CANVAS_W = 2160;
 const CANVAS_H = 2160;
-const KEY = ['d', 'f', 'j', 'k'];
+const KEY = {
+    lane: ['d', 'f', 'j', 'k'],
+    pause: ['Escape', 'p']
+};
 const LANE = {
     width: 250,
     margin: 100,
@@ -19,9 +22,8 @@ const NOTE = {
     badTime: 220,
     color: '#008000'
 };
-const JUDGMENTLINE = {
+const JUDGE_LINE = {
     
-
 };
 const SCORE = {
     point: 0,
@@ -34,6 +36,10 @@ const SCORE = {
 };
 let backLane = [];
 let gameFrame = 0;
+let elapsedTime = 0;
+let elapsedTimeAll = 0;
+let stoppedTime = 0;
+let startTime;
 
 function gameInit() {
     CAN.width = CANVAS_W;
@@ -43,6 +49,7 @@ function gameInit() {
     for (let i = 0; i < 4; i++) {
         backLane[i] = new BackLane(i);
     }
+    startTime = Date.now();
 }
 
 function gameLoop() {
