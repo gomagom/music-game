@@ -7,7 +7,7 @@ const CANVAS_H = 2160;
 const LINE_WIDTH = 10;
 const KEY = {
     lane: ['d', 'f', 'j', 'k'],
-    pause: ['Escape', 'p'],
+    pause: 'p',
     status: []
 };
 
@@ -25,6 +25,16 @@ const NOTE = {
     frameColor: [0, 174, 239],
     bodyColor: [0, 174, 239, 0.8]
 };
+
+const SOUND = {
+    bgm: 0,
+    hit: document.getElementById('se-hit'),
+    bad: document.getElementById('se-bad'),
+    bgmVolume: 0.5,
+    hitVolume: 0.5,
+    badVolume: 0.5,
+    data: null
+}
 
 const SCORE = {
     point: 0,
@@ -47,11 +57,14 @@ const TIME = {
     elapsed: 0,
     elapsedAll: 0,
     stopped: 0,
+    stoppedTmp: 0,
     start: 0
 };
 
 const BTN = {
-    start: document.getElementById('start-btn')
+    start: document.getElementById('start-btn'),
+    continue: document.getElementById('btn-continue'),
+    restart: document.getElementById('btn-restart')
 }
 
 const DEBUG = {
@@ -60,6 +73,9 @@ const DEBUG = {
 
 const BACK_LANE = [];
 const JUDGE_LINE = new JudgeLine;
+window.AudioContext = window.AudioContext || window.webkitAudioContext;
+const SCTX = new AudioContext();
+let gameActive = true;
 let gameFrame = 0;
 let checkFrame = 0;
 
@@ -69,15 +85,11 @@ function gameInit() {
     CAN.setAttribute('style', 'display:block;margin:auto;background-color: #bbb');
     CTX.lineWidth = LINE_WIDTH;
 
-    for (let i = 0; i < 4; i++) {
-        BACK_LANE[i] = new BackLane(i);
-    }
-
-    TIME.start = Date.now();
-    prepareMusicScore();
-    window.requestAnimationFrame(gameLoop);
-    setInterval(checkLoop, 4);
-    eventObserver();
+    BTN.start.onclick = () => {
+        gameStart();
+        eventObserver();
+        document.getElementById('startOverlay').style.display = "none";
+    };
 }
 
 function checkLoop() {
@@ -86,7 +98,14 @@ function checkLoop() {
 
 function gameLoop() {
     gameFrame++;
-    calcElapsedTime();
+    if (!document.hasFocus() && gameActive) {
+        toggleGame();
+    }
+    if (gameActive) {
+        calcElapsedTime();
+    } else {
+        calcStoppedTime();
+    }
 
     BACK_LANE.forEach(val => val.update());
 
@@ -100,5 +119,5 @@ function gameLoop() {
 }
 
 window.onload = () => {
-    manageButton();
+    gameInit();
 }

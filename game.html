@@ -7,6 +7,8 @@
 </head>
 <body>
     <canvas id="can"></canvas>
+    <audio id="se-hit" src="sound/se_hit.mp3" preload></audio>
+    <audio id="se-bad" src="sound/se_bad.mp3" preload></audio>
     <div id="startOverlay">
         <form name="music" class="radio-form">
             <input type="radio" name="panel" value="0" id="upload-music" class="radio-input" checked="checked">
@@ -15,8 +17,9 @@
             </label>
             <input type="radio" name="panel" value="1" id="select-music" class="radio-input">
             <label for="select-music" class="radio-label">
-                <select name="select-music" id="select-music">
-                    <option value="1">テスト</option>
+                <select name="select-music" id="select-music-file">
+                    <option value="BGM_d1.mp3" selected>サンプル</option>
+                    <option value="BGM_test01.mp3">サンプル2</option>
                 </select>
             </label>
         </form>
@@ -27,12 +30,25 @@
             </label>
             <input type="radio" name="panel" value="3" id="select-csv" class="radio-input">
             <label for="select-csv" class="radio-label">
-                <select name="select-csv" id="select-csv">
-                    <option value="1">テスト</option>
+                <select name="select-csv" id="select-csv-file">
+                    <option value="sample" selected>サンプル</option>
+                    <option value="test1">テスト1</option>
+                    <option value="jujutsu">呪術廻戦</option>
                 </select>
             </label>
         </form>
         <input type="submit" class="btn" value="ゲームスタート！" id="start-btn">
+    </div>
+    <div id="pauseOverlay">
+        <ul>
+            <li><a href="#" id="btn-continue" class="btn">続ける</a></li>
+            <li><a href="#" id="btn-restart" class="btn">最初から</a></li>
+            <li><a href="game.html" class="btn">選択画面に戻る</a></li>
+            <li><a href="index.html" class="btn">タイトルに戻る</a></li>
+        </ul>
+    </div>
+    <div id="resultOverlay">
+
     </div>
     <script src="js/game/function.js"></script>
     <script src="js/game/class.js"></script>

@@ -1,3 +1,15 @@
+function gameStart() {
+    for (let i = 0; i < 4; i++) {
+        BACK_LANE[i] = new BackLane(i);
+    }
+    prepareMusicScore();
+    prepareMusicFile();
+    loadSE();
+    TIME.start = Date.now();
+    window.requestAnimationFrame(gameLoop);
+    setInterval(checkLoop, 4);
+}
+
 // ゲーム内の経過時間と稼働時間を計算
 function calcElapsedTime() {
     TIME.elapsedAll = Date.now() - TIME.start;
@@ -12,7 +24,6 @@ async function prepareMusicScore() {
     } else {
         score = await getCSV(); // CSVから読み込んだ譜面データを受け取る
     }
-    console.log(score);
 
     // 曲情報を格納
     INFO.title = score[0][0];
@@ -24,7 +35,6 @@ async function prepareMusicScore() {
 
     BACK_LANE.forEach((val, index) => val.generateNote(LANE_DATA[index]));
 }
-
 
 // ローカルのCSVファイルを読み込む
 function importCSV() {
@@ -39,8 +49,9 @@ function importCSV() {
 // sheet/のCSVファイルを読み込む
 function getCSV() {
     return new Promise((resolve) => {
+        const SELECT = document.getElementById('select-csv-file');
         const REQ = new XMLHttpRequest();           // HTTPでファイルを読み込むためのXMLHttpRrequestオブジェクトを生成
-        REQ.open('get', 'sheet/sample.csv', true);  // アクセスするファイルを指定
+        REQ.open('get', 'sheet/' + SELECT.value + '.csv', true);  // アクセスするファイルを指定
         REQ.send(null);                             // HTTPリクエストの発行
         REQ.onload = () => resolve(convertCSVtoArray(REQ.responseText));    // 読み込んだ文字データを関数に渡して終了
     });
@@ -76,17 +87,120 @@ function cutMusicScore(arr) {
     return DATA;
 }
 
+// ゲーム用の音楽ファイルを準備
+async function prepareMusicFile() {
+    let src;
+    if (document.getElementById('upload-music').checked) {
+        src = await importMusic();
+    } else {
+        src = await getMusic();
+    }
+    if (!SOUND.bgm) {
+        SOUND.bgm = new Audio(src);
+    }
+    SOUND.bgm.volume = SOUND.bgmVolume;
+    SOUND.bgm.currentTime = 0;
+    SOUND.hit.volume = SOUND.hitVolume;
+    SOUND.bad.volume = SOUND.badVolume;
+    SOUND.bgm.play();
+}
+
+
+// ローカルの楽曲ファイルを読み込む
+function importMusic() {
+    return new Promise((resolve) => {
+        const SELECT = document.getElementById('upload-music-file');
+        const SRC = window.URL.createObjectURL(SELECT.files[0]);
+        resolve(SRC);
+    });
+}
+
+
+// sound/の楽曲ファイルを読み込む
+function getMusic() {
+    return new Promise((resolve) => {
+        const SELECT = document.getElementById('select-music-file');
+        const SRC = 'sound/' + SELECT.value;
+        resolve(SRC);
+    });
+}
+
+function loadSE() {
+    const REQ = new XMLHttpRequest();
+    REQ.responseType = 'arraybuffer';
+    REQ.open('get', 'sound/se_hit.mp3', true);
+    REQ.onload = () => {
+        SCTX.decodeAudioData(
+            REQ.response,
+            function(data) {
+                SOUND.data = data;
+            },
+            function(e) {
+                alert(e.err);
+            }
+        );
+    };
+    REQ.send();
+}
+
+function playSE() {
+    if (!SOUND.data) {
+        return;
+    }
+    const BUFFER_SOURCE = SCTX.createBufferSource();
+    BUFFER_SOURCE.buffer = SOUND.data;
+    BUFFER_SOURCE.connect(SCTX.destination);
+    BUFFER_SOURCE.start(0);
+}
+
 function eventObserver() {
     //キーが押されたときと押し続けているとき
     document.onkeydown = e => {
+        playSE();
         const TARGET = BACK_LANE.find(val => val.key === e.key);
-        if (TARGET && !KEY.status[TARGET.key]) {
+        if (TARGET && !KEY.status[TARGET.key] && gameActive) {
             TARGET.judge();
+        }
+        if (KEY.pause === e.key && !KEY.status[e.key]) {
+            toggleGame();
         }
         KEY.status[e.key] = true;
     };
 
     document.onkeyup = e => KEY.status[e.key] = false;  //キーが離された時
+
+    BTN.continue.addEventListener('click', () => toggleGame());
+    BTN.restart.addEventListener('click', () => {
+        gameRestart();
+        toggleGame();
+    });
+}
+
+function toggleGame() {
+    if (gameActive) {
+        gameActive = false;
+        SOUND.bgm.pause();
+        document.getElementById('pauseOverlay').style.display = "block";
+    } else {
+        gameActive = true;
+        SOUND.bgm.currentTime = TIME.elapsed / 1000;
+        SOUND.bgm.play();
+        document.getElementById('pauseOverlay').style.display = "none";
+    }
+}
+
+function gameRestart() {
+    for (const key in SCORE) {
+        SCORE[key] = 0;
+    }
+    for (const key in TIME) {
+        TIME[key] = 0;
+    }
+    gameStart();
+}
+
+function calcStoppedTime() {
+    TIME.stopped = Date.now() - TIME.start - TIME.elapsed;
 }
 
 function updateGameScore(grade) {
@@ -114,14 +228,6 @@ function updateGameScore(grade) {
     }
 }
 
-function manageButton() {
-    BTN.start.onclick = () => {
-        gameInit();
-
-        document.getElementById('startOverlay').style.display = "none";
-    };
-}
-
 // デバック用の情報を表示する
 function showDebugInfo() {
     CTX.font = '100px Impact';
@@ -132,7 +238,8 @@ function showDebugInfo() {
     CTX.fillText(SCORE.bad, 20, 460);
     CTX.fillText(SCORE.combo, 20, 580);
     CTX.fillText(SCORE.maxCombo, 20, 700);
-    CTX.fillText(TIME.elapsed, 1750, 100)
+    CTX.fillText(TIME.elapsed, 1750, 100);
+    CTX.fillText(TIME.stopped, 1750, 220)
 }
 
 function testKansu() {

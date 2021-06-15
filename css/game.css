@@ -12,6 +12,15 @@ body {
     height: 100%;
 }
 
+button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    padding: 0;
+    appearance: none;
+}
+
 .radio-input {
     display: none;
 }
@@ -60,14 +69,48 @@ body {
     transform: translateY(-0.3vh);
 }
 
+#pauseOverlay {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(100, 100, 100, 0.9);
+    z-index: 100;
+    text-align: center;
+    display: none;
+}
+
+#pauseOverlay ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+#resultOverlay {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(100, 100, 100, 0.9);
+    z-index: 100;
+    text-align: center;
+    display: none;
+}
+
 .btn {
-    font-size: 3vh;
-    padding: 0.5em 1.2em;
+    display: inline-block;
+    min-width: 10em;
+    margin: 3vh auto;
+    font-size: 4vh;
+    padding: 0.5em 0em;
     text-decoration: none;
+    font-weight: bold;
     color: #67c5ff;
     border: solid 0.2vmax #67c5ff;
+    background: rgba(255,255,255,0.9);
     border-radius: 0.6vmax;
-    transition: .4s;
+    transition: .3s;
 }
 
 .btn:hover {
