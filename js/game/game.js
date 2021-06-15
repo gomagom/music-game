@@ -4,25 +4,26 @@ const CAN = document.getElementById("can");
 const CTX = CAN.getContext("2d");
 const CANVAS_W = 2160;
 const CANVAS_H = 2160;
+const LINE_WIDTH = 10;
 const KEY = {
     lane: ['d', 'f', 'j', 'k'],
-    pause: ['Escape', 'p']
+    pause: ['Escape', 'p'],
+    status: []
 };
 
 const LANE = {
     width: 250,
     margin: 100,
-    color: '#eee'
+    color: [238, 238, 238],
+    actColor: [228, 0, 127]
 };
 
 const NOTE = {
     width: LANE.width,      // ノーツの幅(px)
     height: 100,
-    perfectTime: 40,        // 判定の範囲(±ms)
-    greatTime: 70,
-    goodTime: 120,
-    badTime: 220,
-    color: '#00aeef'
+    hitRange: [40, 70, 120, 220],   // 判定の範囲(±ms)
+    frameColor: [0, 174, 239],
+    bodyColor: [0, 174, 239, 0.8]
 };
 
 const SCORE = {
@@ -49,15 +50,24 @@ const TIME = {
     start: 0
 };
 
+const BTN = {
+    start: document.getElementById('start-btn')
+}
+
+const DEBUG = {
+
+};
+
 const BACK_LANE = [];
 const JUDGE_LINE = new JudgeLine;
 let gameFrame = 0;
+let checkFrame = 0;
 
 function gameInit() {
     CAN.width = CANVAS_W;
     CAN.height = CANVAS_H;
     CAN.setAttribute('style', 'display:block;margin:auto;background-color: #bbb');
-    CTX.font = "100px 'Impact";
+    CTX.lineWidth = LINE_WIDTH;
 
     for (let i = 0; i < 4; i++) {
         BACK_LANE[i] = new BackLane(i);
@@ -65,24 +75,30 @@ function gameInit() {
 
     TIME.start = Date.now();
     prepareMusicScore();
+    window.requestAnimationFrame(gameLoop);
+    setInterval(checkLoop, 4);
+    eventObserver();
+}
+
+function checkLoop() {
+    checkFrame++;
 }
 
 function gameLoop() {
     gameFrame++;
     calcElapsedTime();
 
-    CTX.clearRect(0, 0, CANVAS_W, CANVAS_H);
-    CTX.font = "100px 'Impact";
-    CTX.fillStyle = 'black';
-    CTX.fillText(TIME.elapsed, 20, 100);
+    BACK_LANE.forEach(val => val.update());
 
+    CTX.clearRect(0, 0, CANVAS_W, CANVAS_H);
     BACK_LANE.forEach(val => val.draw());
     JUDGE_LINE.draw();
     BACK_LANE.forEach(val => val.drawNote());
+    showDebugInfo();
+
     window.requestAnimationFrame(gameLoop);
 }
 
 window.onload = () => {
-    gameInit();
-    gameLoop();
+    manageButton();
 }

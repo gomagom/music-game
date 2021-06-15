@@ -2,10 +2,38 @@
 <html>
 <head>
     <meta charset="utf-8">
+    <link rel="stylesheet" href="css/game.css">
     <title>Play - CLOCK NOTES</title>
 </head>
 <body>
     <canvas id="can"></canvas>
+    <div id="startOverlay">
+        <form name="music" class="radio-form">
+            <input type="radio" name="panel" value="0" id="upload-music" class="radio-input" checked="checked">
+            <label for="upload-music" class="radio-label">
+                <input type="file" name="upload-btn" accept=".mp3" id="upload-music-file">
+            </label>
+            <input type="radio" name="panel" value="1" id="select-music" class="radio-input">
+            <label for="select-music" class="radio-label">
+                <select name="select-music" id="select-music">
+                    <option value="1">テスト</option>
+                </select>
+            </label>
+        </form>
+        <form name="csv" class="radio-form">
+            <input type="radio" name="panel" value="2" id="upload-csv" class="radio-input" checked="checked">
+            <label for="upload-csv" class="radio-label">
+                <input type="file" name="upload-btn" accept=".csv" id="upload-csv-file">
+            </label>
+            <input type="radio" name="panel" value="3" id="select-csv" class="radio-input">
+            <label for="select-csv" class="radio-label">
+                <select name="select-csv" id="select-csv">
+                    <option value="1">テスト</option>
+                </select>
+            </label>
+        </form>
+        <input type="submit" class="btn" value="ゲームスタート！" id="start-btn">
+    </div>
     <script src="js/game/function.js"></script>
     <script src="js/game/class.js"></script>
     <script src="js/game/game.js"></script>

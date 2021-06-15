@@ -1,0 +1,81 @@
+.btn-main {
+    display: inline-block;
+    width: 300px;
+    padding: 20px 0;
+    margin: 20px 0;
+    text-decoration: none;
+    font-size:25px;
+    font-weight: bold;
+    color: #67c5ff;
+    border: solid 2px #67c5ff;
+    background: rgba(255,255,255,0.8);
+    border-radius: 3px;
+    transition: .4s;
+    outline: none; /*ボタンを押した時の枠線描画をなくす*/
+}
+
+.btn-main:hover,
+.btn-main:active {
+    background: #67c5ff;
+    color: white;
+}
+
+#menu {
+    position: absolute;
+    z-index: 1;
+    top: 100px;
+    overflow-x: hidden;
+    right: 0;
+    width: 0%;
+}
+
+#menu.open {
+    width: 100%;
+}
+
+#menu ul {
+    list-style-type: none;
+    text-align: center;
+}
+
+ul {
+    padding-left:0;
+}
+
+html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+
+#can {
+    height: 100%;
+}
+
+#can2 {
+    width: 100%;
+}
+
+#scroll {
+    overflow-y: scroll;
+    height: 100%;
+}
+
+.split {
+    position: absolute;
+    height: 100%;
+}
+
+.split-left {
+    width: calc(100% - 400px);
+    left: 0;
+}
+
+.split-right {
+    width: 400px;
+    right: 0;
+}
