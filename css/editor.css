@@ -1,0 +1,33 @@
+html {
+    height: 100%;
+}
+
+body {
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+
+#can2 {
+    width: 100%;
+}
+
+#scroll {
+    overflow-y: scroll;
+    height: 100%;
+}
+
+.split {
+    position: absolute;
+    height: 100%;
+}
+
+.split-left {
+    width: calc(100% - 400px);
+    left: 0;
+}
+
+.split-right {
+    width: 400px;
+    right: 0;
+}

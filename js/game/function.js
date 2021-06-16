@@ -4,10 +4,9 @@ function gameStart() {
     }
     prepareMusicScore();
     prepareMusicFile();
-    loadSE();
+    SOUND.seList.forEach(loadSE);
     TIME.start = Date.now();
     gameLoop();
-    setInterval(checkLoop, 4);
 }
 
 // ゲーム内の経過時間と稼働時間を計算
@@ -19,7 +18,7 @@ function calcElapsedTime() {
 // 実行用の譜面を準備
 async function prepareMusicScore() {
     let score
-    if (document.getElementById('upload-csv').checked) {
+    if (ELEMENT.uploadCSV.checked) {
         score = await importCSV();
     } else {
         score = await getCSV(); // CSVから読み込んだ譜面データを受け取る
@@ -39,7 +38,7 @@ async function prepareMusicScore() {
 // ローカルのCSVファイルを読み込む
 function importCSV() {
     return new Promise((resolve) => {
-        const FILE = document.getElementById('upload-csv-file');
+        const FILE = ELEMENT.uploadCSVFile;
         const READER = new FileReader();
         READER.readAsText(FILE.files[0]);
         READER.onload = () => resolve(convertCSVtoArray(READER.result));
@@ -79,7 +78,6 @@ function cutMusicScore(arr) {
     arr.shift();                                        // 曲情報を含む先頭行を削除
     arr.sort((first, second) => first[3] - second[3]);  // 到達時間順に並べ替える
     TIME.end = arr[arr.length - 1][3] + 3000;
-    console.log(TIME.end);
 
     // レーン番号を元に分ける
     for (let i = 0; i < DATA.length; i++) {
@@ -92,7 +90,7 @@ function cutMusicScore(arr) {
 // ゲーム用の音楽ファイルを準備
 async function prepareMusicFile() {
     let src;
-    if (document.getElementById('upload-music').checked) {
+    if (ELEMENT.uploadMusic.checked) {
         src = await importMusic();
     } else {
         src = await getMusic();
@@ -102,8 +100,6 @@ async function prepareMusicFile() {
     }
     SOUND.bgm.volume = SOUND.bgmVolume;
     SOUND.bgm.currentTime = 0;
-    SOUND.hit.volume = SOUND.hitVolume;
-    SOUND.bad.volume = SOUND.badVolume;
     SOUND.bgm.play();
 }
 
@@ -111,7 +107,7 @@ async function prepareMusicFile() {
 // ローカルの楽曲ファイルを読み込む
 function importMusic() {
     return new Promise((resolve) => {
-        const SELECT = document.getElementById('upload-music-file');
+        const SELECT = ELEMENT.uploadMusicFile;
         const SRC = window.URL.createObjectURL(SELECT.files[0]);
         resolve(SRC);
     });
@@ -129,15 +125,15 @@ function getMusic() {
 
 
 // ヒットSEを読み込む
-function loadSE() {
+function loadSE(sound) {
     const REQ = new XMLHttpRequest();
     REQ.responseType = 'arraybuffer';
-    REQ.open('get', 'sound/se_hit.mp3', true);
+    REQ.open('get', sound.url, true);
     REQ.onload = () => {
         SCTX.decodeAudioData(
             REQ.response,
             function(data) {
-                SOUND.data = data;
+                sound.data = data;
             },
             function(e) {
                 alert(e.err);
@@ -149,12 +145,12 @@ function loadSE() {
 
 
 //　ヒットSEを鳴らす
-function playSE() {
-    if (!SOUND.data) {
+function playSE(sound) {
+    if (!sound.data) {
         return;
     }
     const BUFFER_SOURCE = SCTX.createBufferSource();
-    BUFFER_SOURCE.buffer = SOUND.data;
+    BUFFER_SOURCE.buffer = sound.data;
     BUFFER_SOURCE.connect(SCTX.destination);
     BUFFER_SOURCE.start(0);
 }
@@ -162,16 +158,11 @@ function playSE() {
 function eventObserver() {
     //キーが押されたときと押し続けているとき
     document.onkeydown = e => {
-        KEY.lane.forEach(val => {
-            if (val == e.key && !KEY.status[e.key]) {
-                playSE();
-            }
-        });
         const TARGET = BACK_LANE.find(val => val.key === e.key);
         if (TARGET && !KEY.status[TARGET.key] && gameActive) {
             TARGET.judge();
         }
-        if (KEY.pause === e.key && !KEY.status[e.key]) {
+        if (KEY.pause === e.key && !KEY.status[e.key] && !gameFinish) {
             toggleGame();
         }
         KEY.status[e.key] = true;
@@ -180,9 +171,13 @@ function eventObserver() {
     document.onkeyup = e => KEY.status[e.key] = false;  //キーが離された時
 
     BTN.continue.addEventListener('click', () => toggleGame());
-    BTN.restart.addEventListener('click', () => {
-        gameRestart();
-        toggleGame();
+    BTN.restart[0].addEventListener('click', () => gameRestart());
+    BTN.restart[1].addEventListener('click', () => gameRestart());
+
+    window.addEventListener('blur', () => {
+        if (gameActive && !gameFinish) {
+            toggleGame();
+        }
     });
 }
 
@@ -206,8 +201,10 @@ function gameRestart() {
     for (const key in TIME) {
         TIME[key] = 0;
     }
-    cancelAnimationFrame(loopTarget);
+    gameFinish = false;
+    toggleGame();
     gameStart();
+    document.getElementById('resultOverlay').style.display = "none";
 }
 
 function calcStoppedTime() {
@@ -217,14 +214,17 @@ function calcStoppedTime() {
 function updateGameScore(grade) {
     switch (grade) {
         case 0:
+            SCORE.point += 100 + SCORE.combo;
             SCORE.perfect++;
             SCORE.combo++;
             break;
         case 1:
+            SCORE.point += 80 + SCORE.combo * 0.8;
             SCORE.great++;
             SCORE.combo++;
             break;
         case 2:
+            SCORE.point += 50 + SCORE.combo * 0.5;
             SCORE.good++;
             SCORE.combo++;
             break;
@@ -240,7 +240,7 @@ function updateGameScore(grade) {
 }
 
 function drawCombo() {
-    if (!SCORE.combo) {
+    if (SCORE.combo < 2) {
         return;
     }
     CTX.save();
@@ -254,12 +254,16 @@ function drawCombo() {
 }
 
 function showResult() {
-    if (TIME.end < TIME.elapsed) {
-        console.log('stop');
-        window.cancelAnimationFrame(loopTarget);
-        window.cancelAnimationFrame(loopTarget);
-        window.cancelAnimationFrame(loopTarget);
-    }
+    gameFinish = true;
+    gameActive = false;
+
+    SCORE.point = Math.floor(SCORE.point);
+    const INFO = document.getElementsByClassName('result-info');
+    const LIST = ['point', 'perfect', 'great', 'good', 'bad', 'maxCombo'];
+    const STR = ['Score', 'Perfect', 'Great', 'Good', 'Bad', 'MaxCombo'];
+    LIST.forEach((val, index) => INFO[index].textContent = `${STR[index]} : ${SCORE[LIST[index]]}`);
+
+    document.getElementById('resultOverlay').style.display = "block";
 }
 
 // デバック用の情報を表示する
@@ -275,8 +279,3 @@ function showDebugInfo() {
     CTX.fillText(TIME.elapsed, 1750, 100);
     CTX.fillText(TIME.stopped, 1750, 220)
 }
-
-function testKansu() {
-
-}
-

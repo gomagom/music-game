@@ -1,10 +1,5 @@
 'use strict';
 
-const CAN = document.getElementById("can");
-const CTX = CAN.getContext("2d");
-const CANVAS_W = 2160;
-const CANVAS_H = 2160;
-const LINE_WIDTH = 10;
 const KEY = {
     lane: ['d', 'f', 'j', 'k'],
     pause: 'p',
@@ -28,10 +23,12 @@ const NOTE = {
 
 const SOUND = {
     bgm: 0,
-    hit: document.getElementById('se-hit'),
-    bad: document.getElementById('se-bad'),
-    bgmVolume: 0.5,
-    hitVolume: 0.5,
+    seList: [
+        {url: 'sound/se_hit.mp3', data: null},
+        {url: 'sound/se_bad.mp3', data: null},
+    ],
+    bgmVolume: 0.2,
+    hitVolume: 0.9,
     badVolume: 0.5,
     data: null
 }
@@ -65,21 +62,27 @@ const TIME = {
 const BTN = {
     start: document.getElementById('start-btn'),
     continue: document.getElementById('btn-continue'),
-    restart: document.getElementById('btn-restart')
+    restart: document.getElementsByClassName('btn-restart')
 }
 
-const DEBUG = {
+const ELEMENT = {
+    uploadCSV: document.getElementById('upload-csv'),
+    uploadCSVFile: document.getElementById('upload-csv-file'),
+    uploadMusic: document.getElementById('upload-music'),
+    uploadMusicFile: document.getElementById('upload-music-file')
+}
 
-};
-
+const CAN = document.getElementById("can");
+const CTX = CAN.getContext("2d");
+const CANVAS_W = 2160;
+const CANVAS_H = 2160;
+const LINE_WIDTH = 10;
 const BACK_LANE = [];
 const JUDGE_LINE = new JudgeLine;
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
 const SCTX = new AudioContext();
 let gameActive = true;
-let loopTarget;
-let gameFrame = 0;
-let checkFrame = 0;
+let gameFinish = false;
 
 function gameInit() {
     CAN.width = CANVAS_W;
@@ -88,28 +91,23 @@ function gameInit() {
     CTX.lineWidth = LINE_WIDTH;
 
     BTN.start.onclick = () => {
+        if ((ELEMENT.uploadCSV.checked && !ELEMENT.uploadCSVFile.files[0])
+         || (ELEMENT.uploadMusic.checked && !ELEMENT.uploadMusicFile.files[0])) {
+            alert('ファイルを選択してください');
+            return;
+        }
         gameStart();
         eventObserver();
         document.getElementById('startOverlay').style.display = "none";
     };
 }
 
-function checkLoop() {
-    checkFrame++;
-}
-
 function gameLoop() {
-    gameFrame++;
-    if (!document.hasFocus() && gameActive) {
-        toggleGame();
-    }
     if (gameActive) {
         calcElapsedTime();
     } else {
         calcStoppedTime();
     }
-
-    showResult();
 
     BACK_LANE.forEach(val => val.update());
 
@@ -118,9 +116,14 @@ function gameLoop() {
     JUDGE_LINE.draw();
     BACK_LANE.forEach(val => val.drawNote());
     drawCombo();
-    showDebugInfo();
 
-    loopTarget = window.requestAnimationFrame(gameLoop);
+    // showDebugInfo();     // デバッグ用データ描画
+
+    if (TIME.end > TIME.elapsed || !TIME.end) {
+        window.requestAnimationFrame(gameLoop);
+    } else {
+        showResult();
+    }
 }
 
 window.onload = () => {

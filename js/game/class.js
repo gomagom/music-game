@@ -3,7 +3,7 @@ class JudgeLine {
         this.height = 40;
         this.width = LANE.width * 4 + LANE.margin * 5;
         this.x = (CANVAS_W - this.width) / 2;
-        this.centerY = CANVAS_H * 7 / 8;
+        this.centerY = CANVAS_H * 5 / 6;
         this.y = this.centerY - this.height / 2;
         this.color = '#e4007f';
         this.targetTime = 0;
@@ -82,6 +82,11 @@ class BackLane {
             if (i > 0 && GRADE[i] === 3) {
                 break;
             }
+            if (GRADE[i] < 3) {
+                playSE(SOUND.seList[0]);
+            } else {
+                playSE(SOUND.seList[1]);
+            }
             updateGameScore(GRADE[i]);      // スコアを更新
             JUDGE_LINE.drawGrade(GRADE[i]);
             TARGET[i].close();          // 判定済みのノーツ処理を停止
@@ -98,7 +103,7 @@ class BackLane {
         CTX.textAlign = 'center';
         CTX.textBaseline = 'middle';
         CTX.strokeStyle = 'rgba(' + this.actColor + ', 0.7)';
-        CTX.strokeText(this.key, this.x + this.width / 2, CANVAS_H - 150);
+        CTX.strokeText(this.key, this.x + this.width / 2, CANVAS_H - 160);
         CTX.restore();
 
         if (KEY.status[this.key]) {

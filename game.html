@@ -7,15 +7,14 @@
 </head>
 <body>
     <canvas id="can"></canvas>
-    <audio id="se-hit" src="sound/se_hit.mp3" preload></audio>
-    <audio id="se-bad" src="sound/se_bad.mp3" preload></audio>
     <div id="startOverlay">
         <form name="music" class="radio-form">
-            <input type="radio" name="panel" value="0" id="upload-music" class="radio-input" checked="checked">
+            <p class="start-head">曲</p>
+            <input type="radio" name="panel" value="0" id="upload-music" class="radio-input">
             <label for="upload-music" class="radio-label">
                 <input type="file" name="upload-btn" accept=".mp3" id="upload-music-file">
             </label>
-            <input type="radio" name="panel" value="1" id="select-music" class="radio-input">
+            <input type="radio" name="panel" value="1" id="select-music" class="radio-input" checked="checked">
             <label for="select-music" class="radio-label">
                 <select name="select-music" id="select-music-file">
                     <option value="BGM_d1.mp3" selected>サンプル</option>
@@ -24,11 +23,12 @@
             </label>
         </form>
         <form name="csv" class="radio-form">
-            <input type="radio" name="panel" value="2" id="upload-csv" class="radio-input" checked="checked">
+            <p class="start-head">譜面</p>
+            <input type="radio" name="panel" value="2" id="upload-csv" class="radio-input">
             <label for="upload-csv" class="radio-label">
                 <input type="file" name="upload-btn" accept=".csv" id="upload-csv-file">
             </label>
-            <input type="radio" name="panel" value="3" id="select-csv" class="radio-input">
+            <input type="radio" name="panel" value="3" id="select-csv" class="radio-input" checked="checked">
             <label for="select-csv" class="radio-label">
                 <select name="select-csv" id="select-csv-file">
                     <option value="sample" selected>サンプル</option>
@@ -37,18 +37,35 @@
                 </select>
             </label>
         </form>
-        <input type="submit" class="btn" value="ゲームスタート！" id="start-btn">
+        <div>
+            <input type="submit" class="btn" value="ゲームスタート！" id="start-btn">
+            <a href="index.html" class="btn">タイトルに戻る</a>
+        </div>
     </div>
     <div id="pauseOverlay">
         <ul>
             <li><a href="#" id="btn-continue" class="btn">続ける</a></li>
-            <li><a href="#" id="btn-restart" class="btn">最初から</a></li>
+            <li><a href="#" class="btn btn-restart">最初から</a></li>
             <li><a href="game.html" class="btn">選択画面に戻る</a></li>
             <li><a href="index.html" class="btn">タイトルに戻る</a></li>
         </ul>
     </div>
     <div id="resultOverlay">
-
+        <div id="result-panel">
+            <p class="result-info" id="result-score">Score</p>
+            <p class="result-info"></p>
+            <p class="result-info"></p>
+            <p class="result-info"></p>
+            <p class="result-info"></p>
+            <p class="result-info"></p>
+            <div>
+                <div id="panel-bottom">
+                    <a href="#" class="btn btn-restart">最初から</a>
+                    <a href="game.html" class="btn">選択画面に戻る</a>
+                    <a href="index.html" class="btn">タイトルに戻る</a>
+                </div>
+            </div>
+        </div>
     </div>
     <script src="js/game/function.js"></script>
     <script src="js/game/class.js"></script>

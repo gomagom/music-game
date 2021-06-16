@@ -3,6 +3,7 @@ html {
 }
 
 body {
+    font-family: '游ゴシック体';
     background-color: #e6afcf;
     height: 100%;
     margin: 0px;
@@ -26,6 +27,13 @@ button {
     display: none;
 }
 
+.start-head {
+    font-size: 4vh;
+    margin: auto;
+    font-weight: bold;
+    color: #67c5ff;
+}
+
 #startOverlay {
     position: absolute;
     left: 0;
@@ -39,7 +47,11 @@ button {
 }
 
 .radio-form {
-    margin: 5vh auto;
+    width: 50vw;
+    margin: 1.5vh auto;
+    border: solid 0.5vmax #67c5ff;
+    background: #fff;
+    border-radius: 1vmax;
 }
 
 .radio-label {
@@ -53,7 +65,7 @@ button {
     box-shadow: 0 1vh 0 0 #aac5de;
     transform: translateY(-1vh);
     border-radius: 0.8vmax;
-    margin: 1vw auto;
+    margin: 2vh auto;
     transition:0.2s all;
 }
 
@@ -97,20 +109,54 @@ button {
     z-index: 100;
     text-align: center;
     display: none;
+    vertical-align: middle;
+}
+
+#result-panel {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    width: 90vw;
+    height: 75vh;
+    border: solid 0.5vmax #67c5ff;
+    background: #fff;
+    border-radius: 1vmax;
+}
+
+#panel-bottom {
+    position: absolute;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    margin: auto;
+}
+
+#result-score {
+    font-size: 8vh;
+    margin: 5vh;
+}
+
+.result-info {
+    font-size: 4vh;
+    font-weight: bold;
+    line-height: 3vh;
+    color: #67c5ff;
 }
 
 .btn {
     display: inline-block;
-    font-family: '游ゴシック体';
     min-width: 10em;
-    margin: 3vh auto;
+    margin: 3vh 1vw;
     font-size: 4vh;
     padding: 0.5em 0em;
     text-decoration: none;
     font-weight: bold;
     color: #67c5ff;
-    border: solid 0.2vmax #67c5ff;
-    background: rgba(255,255,255,0.9);
+    border: solid 0.3vmax #67c5ff;
+    background: #fff;
     border-radius: 0.6vmax;
     transition: .3s;
 }
@@ -118,29 +164,4 @@ button {
 .btn:hover {
     background: #67c5ff;
     color: white;
-}
-
- /* 以下エディタ用 */
-#can2 {
-    width: 100%;
-}
-
-#scroll {
-    overflow-y: scroll;
-    height: 100%;
-}
-
-.split {
-    position: absolute;
-    height: 100%;
-}
-
-.split-left {
-    width: calc(100% - 400px);
-    left: 0;
-}
-
-.split-right {
-    width: 400px;
-    right: 0;
 }
