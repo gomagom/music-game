@@ -3,6 +3,7 @@ html {
 }
 
 body {
+    background-color: #e6afcf;
     height: 100%;
     margin: 0px;
     padding: 0px;
@@ -100,6 +101,7 @@ button {
 
 .btn {
     display: inline-block;
+    font-family: '游ゴシック体';
     min-width: 10em;
     margin: 3vh auto;
     font-size: 4vh;

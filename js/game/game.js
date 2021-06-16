@@ -58,7 +58,8 @@ const TIME = {
     elapsedAll: 0,
     stopped: 0,
     stoppedTmp: 0,
-    start: 0
+    start: 0,
+    end: 0
 };
 
 const BTN = {
@@ -76,13 +77,14 @@ const JUDGE_LINE = new JudgeLine;
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
 const SCTX = new AudioContext();
 let gameActive = true;
+let loopTarget;
 let gameFrame = 0;
 let checkFrame = 0;
 
 function gameInit() {
     CAN.width = CANVAS_W;
     CAN.height = CANVAS_H;
-    CAN.setAttribute('style', 'display:block;margin:auto;background-color: #bbb');
+    CAN.setAttribute('style', 'display:block;margin:auto;background-color: #e6afcf');
     CTX.lineWidth = LINE_WIDTH;
 
     BTN.start.onclick = () => {
@@ -107,15 +109,18 @@ function gameLoop() {
         calcStoppedTime();
     }
 
+    showResult();
+
     BACK_LANE.forEach(val => val.update());
 
     CTX.clearRect(0, 0, CANVAS_W, CANVAS_H);
     BACK_LANE.forEach(val => val.draw());
     JUDGE_LINE.draw();
     BACK_LANE.forEach(val => val.drawNote());
+    drawCombo();
     showDebugInfo();
 
-    window.requestAnimationFrame(gameLoop);
+    loopTarget = window.requestAnimationFrame(gameLoop);
 }
 
 window.onload = () => {

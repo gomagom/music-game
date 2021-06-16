@@ -98,7 +98,7 @@ class BackLane {
         CTX.textAlign = 'center';
         CTX.textBaseline = 'middle';
         CTX.strokeStyle = 'rgba(' + this.actColor + ', 0.7)';
-        CTX.strokeText(this.key, this.x + this.width / 2, CANVAS_H / 2);
+        CTX.strokeText(this.key, this.x + this.width / 2, CANVAS_H - 150);
         CTX.restore();
 
         if (KEY.status[this.key]) {

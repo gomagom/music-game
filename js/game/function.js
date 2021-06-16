@@ -6,7 +6,7 @@ function gameStart() {
     prepareMusicFile();
     loadSE();
     TIME.start = Date.now();
-    window.requestAnimationFrame(gameLoop);
+    gameLoop();
     setInterval(checkLoop, 4);
 }
 
@@ -78,6 +78,8 @@ function cutMusicScore(arr) {
 
     arr.shift();                                        // 曲情報を含む先頭行を削除
     arr.sort((first, second) => first[3] - second[3]);  // 到達時間順に並べ替える
+    TIME.end = arr[arr.length - 1][3] + 3000;
+    console.log(TIME.end);
 
     // レーン番号を元に分ける
     for (let i = 0; i < DATA.length; i++) {
@@ -125,6 +127,8 @@ function getMusic() {
     });
 }
 
+
+// ヒットSEを読み込む
 function loadSE() {
     const REQ = new XMLHttpRequest();
     REQ.responseType = 'arraybuffer';
@@ -143,6 +147,8 @@ function loadSE() {
     REQ.send();
 }
 
+
+//　ヒットSEを鳴らす
 function playSE() {
     if (!SOUND.data) {
         return;
@@ -156,7 +162,11 @@ function playSE() {
 function eventObserver() {
     //キーが押されたときと押し続けているとき
     document.onkeydown = e => {
-        playSE();
+        KEY.lane.forEach(val => {
+            if (val == e.key && !KEY.status[e.key]) {
+                playSE();
+            }
+        });
         const TARGET = BACK_LANE.find(val => val.key === e.key);
         if (TARGET && !KEY.status[TARGET.key] && gameActive) {
             TARGET.judge();
@@ -196,6 +206,7 @@ function gameRestart() {
     for (const key in TIME) {
         TIME[key] = 0;
     }
+    cancelAnimationFrame(loopTarget);
     gameStart();
 }
 
@@ -225,6 +236,29 @@ function updateGameScore(grade) {
 
     if (SCORE.maxCombo < SCORE.combo) {
         SCORE.maxCombo = SCORE.combo;
+    }
+}
+
+function drawCombo() {
+    if (!SCORE.combo) {
+        return;
+    }
+    CTX.save();
+    CTX.beginPath();
+    CTX.font = '300px Arial Black';
+    CTX.textAlign = 'center';
+    CTX.textBaseline = 'middle';
+    CTX.fillStyle = 'rgba(255, 204, 0, 0.9)';
+    CTX.fillText(SCORE.combo, CANVAS_W / 2, CANVAS_H / 2);
+    CTX.restore();
+}
+
+function showResult() {
+    if (TIME.end < TIME.elapsed) {
+        console.log('stop');
+        window.cancelAnimationFrame(loopTarget);
+        window.cancelAnimationFrame(loopTarget);
+        window.cancelAnimationFrame(loopTarget);
     }
 }
 
