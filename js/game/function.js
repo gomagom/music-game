@@ -77,7 +77,7 @@ function cutMusicScore(arr) {
 
     arr.shift();                                        // 曲情報を含む先頭行を削除
     arr.sort((first, second) => first[3] - second[3]);  // 到達時間順に並べ替える
-    TIME.end = arr[arr.length - 1][3] + 3000;
+    TIME.end = arr[arr.length - 1][3] + 1500;
 
     // レーン番号を元に分ける
     for (let i = 0; i < DATA.length; i++) {
