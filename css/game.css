@@ -252,3 +252,11 @@ input[type="file"] {
 .upload-file p {
     margin-top: 0.5vh;
 }
+
+#info {
+    position: absolute;
+    left: 4vw;
+    font-size: 5vh;
+    font-weight: bold;
+    color: #fff;
+}

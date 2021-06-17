@@ -6,6 +6,7 @@
     <title>Play - CLOCK NOTES</title>
 </head>
 <body>
+    <p id="info">Pause : P</p>
     <canvas id="can"></canvas>
     <div id="startOverlay">
         <form name="music" class="radio-form">
@@ -55,7 +56,7 @@
     <div id="pauseOverlay">
         <ul>
             <li><a href="#" id="btn-continue" class="btn">続ける</a></li>
-            <li><a href="#" class="btn btn-restart">最初から</a></li>
+            <li><a href="#" class="btn btn-restart">やり直す</a></li>
             <li><a href="game.html" class="btn">選択画面に戻る</a></li>
             <li><a href="index.html" class="btn">タイトルに戻る</a></li>
             <li><span>BGM</span><input type="range" name="BGM-volume" id="BGM-slider" min="0" max="100"></li>
@@ -71,7 +72,7 @@
             <p class="result-info"></p>
             <p class="result-info"></p>
             <div id="panel-bottom">
-                <a href="#" class="btn btn-restart">最初から</a>
+                <a href="#" class="btn btn-restart">はじめから</a>
                 <a href="game.html" class="btn">選択画面に戻る</a>
                 <a href="index.html" class="btn">タイトルに戻る</a>
             </div>

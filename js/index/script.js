@@ -13,7 +13,6 @@ RETURN.addEventListener('click', () => OVERLAY.style.display = "none");
 window.onload = () => {
     try {
         storage = JSON.parse(localStorage['Music-Game'] || '{}');
-        console.log(storage);
     } catch(e) {
         storage = {};
     }
