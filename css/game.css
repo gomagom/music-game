@@ -61,8 +61,8 @@ button {
     justify-content: center; /*左右中央揃え*/
     align-items: center;     /*上下中央揃え*/
     color: #5989cf;
-    background: #c6e4ff;
-    box-shadow: 0 1vh 0 0 #aac5de;
+    background: #b1dbff;
+    box-shadow: 0 1vh 0 0 #96b9d8;
     transform: translateY(-1vh);
     border-radius: 0.8vmax;
     margin: 2vh auto;
@@ -97,6 +97,41 @@ button {
 #pauseOverlay ul {
     list-style-type: none;
     padding-left: 0;
+}
+
+ul span {
+    display: inline-block;
+    font-size: 4vh;
+    font-weight: bold;
+    color: #67c5ff;
+    min-width: 13vh;
+}
+
+input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    cursor: pointer;
+    outline: none;
+    height: 1.5vh;
+    width: 20vw;
+    margin: 4vh auto;
+    background: #fff;
+    border-radius: 0.6vmax;
+    border: solid 0.4vh #67c5ff;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    background: #d1edff;
+    border: solid 0.8vh #67c5ff;
+    width: 4vh;
+    height: 4vh; 
+    border-radius: 50%;
+    box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.15);
+}
+
+input[type="file"] {
+    display: none;
 }
 
 #resultOverlay {
@@ -149,7 +184,7 @@ button {
 .btn {
     display: inline-block;
     min-width: 10em;
-    margin: 3vh 1vw;
+    margin: 3.5vh 1vw;
     font-size: 4vh;
     padding: 0.5em 0em;
     text-decoration: none;
@@ -164,4 +199,56 @@ button {
 .btn:hover {
     background: #67c5ff;
     color: white;
+}
+
+.select-file {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 6vh;
+    width: 25vw;
+    padding-left: 1vw;
+    font-size: 3vh;
+    font-weight: bold;
+    color: #fff;
+    border-radius: 6vh;
+    border: solid 0.2vmax #fff;
+    background-color: inherit;
+    outline: none;
+    cursor: pointer;
+}
+
+.select-file option {
+    background-color: skyblue;
+}
+
+.select-container::before {
+    position: absolute;
+    top: 5.5vh;
+    right: 8.5vw;
+    width: 0;
+    height: 0;
+    padding: 0;
+    content: '';
+    border-left: 1vh solid transparent;
+    border-right: 1vh solid transparent;
+    border-top: 1vh solid #fff;
+}
+
+.upload-file {
+    -webkit-appearance: none;
+    appearance: none;
+    height: 5.2vh;
+    width: 24.5vw;
+    font-size: 3vh;
+    font-weight: bold;
+    color: #fff;
+    border-radius: 6vh;
+    border: solid 0.2vmax #fff;
+    background-color: inherit;
+    outline: none;
+    cursor: pointer;
+}
+
+.upload-file p {
+    margin-top: 0.5vh;
 }

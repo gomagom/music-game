@@ -22,14 +22,13 @@ const NOTE = {
 };
 
 const SOUND = {
-    bgm: 0,
+    bgm: null,
     seList: [
         {url: 'sound/se_hit.mp3', data: null},
         {url: 'sound/se_bad.mp3', data: null},
     ],
-    bgmVolume: 0.2,
-    hitVolume: 0.9,
-    badVolume: 0.5,
+    bgmVolume: 0.25,
+    seVolume: 1,
     data: null
 }
 
@@ -66,10 +65,14 @@ const BTN = {
 }
 
 const ELEMENT = {
+    startOverlay: document.getElementById('startOverlay'),
     uploadCSV: document.getElementById('upload-csv'),
     uploadCSVFile: document.getElementById('upload-csv-file'),
     uploadMusic: document.getElementById('upload-music'),
-    uploadMusicFile: document.getElementById('upload-music-file')
+    uploadMusicFile: document.getElementById('upload-music-file'),
+    uploadStr: this.startOverlay.getElementsByTagName('p'),
+    BGMSlider: document.getElementById('BGM-slider'),
+    SESlider: document.getElementById('SE-slider')
 }
 
 const CAN = document.getElementById("can");
@@ -80,7 +83,8 @@ const LINE_WIDTH = 10;
 const BACK_LANE = [];
 const JUDGE_LINE = new JudgeLine;
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
-const SCTX = new AudioContext();
+const ACTX = new AudioContext();
+let storage = null;
 let gameActive = true;
 let gameFinish = false;
 
@@ -98,7 +102,7 @@ function gameInit() {
         }
         gameStart();
         eventObserver();
-        document.getElementById('startOverlay').style.display = "none";
+        ELEMENT.startOverlay.style.display = "none";
     };
 }
 
@@ -127,5 +131,25 @@ function gameLoop() {
 }
 
 window.onload = () => {
+    ELEMENT.uploadMusicFile.onchange = () => {
+        ELEMENT.uploadStr[1].textContent = ELEMENT.uploadMusicFile.files[0].name;
+        console.log(ELEMENT.uploadMusicFile.files[0].name);
+    }
+    ELEMENT.uploadCSVFile.onchange = () => {
+        ELEMENT.uploadStr[3].textContent = ELEMENT.uploadCSVFile.files[0].name;
+    }
+    try {
+        storage = JSON.parse(localStorage['Music-Game'] || '{}');
+    } catch(e) {
+        storage = {};
+    }
+    if (storage.bgmVolume >= 0) {
+        SOUND.bgmVolume = storage.bgmVolume;
+    }
+    if (storage.seVolume >= 0) {
+        SOUND.seVolume = storage.seVolume;
+    }
+    ELEMENT.BGMSlider.value = SOUND.bgmVolume * 200;
+    ELEMENT.SESlider.value = SOUND.seVolume * 50;
     gameInit();
 }

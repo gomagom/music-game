@@ -2,28 +2,25 @@ html {
     height: 100%;
 }
 
-h1 {
-    color: #67c5ff;
-    font-size: 10vw;
-    vertical-align: middle;
-    margin-top: 30vh;
-    margin-bottom: 5vh;
-}
-
 body {
     text-align: center;
     font-family: '游ゴシック体';
     font-weight: bold;
     background-color: #f6f7d7;
-    height: 100%;
-    margin: 0px;
-    padding: 0px;
+    height: 0%;
+}
+
+h1 {
+    color: #67c5ff;
+    font-size: 10vw;
+    margin-top: 30vh;
+    margin-bottom: 5vh;
 }
 
 .btn {
     display: inline-block;
     min-width: 10em;
-    margin: 3vh 4vw;
+    margin: 3vh 1vw;
     font-size: 4vh;
     padding: 0.5em 0em;
     text-decoration: none;
@@ -37,4 +34,74 @@ body {
 .btn:hover {
     background: #67c5ff;
     color: white;
+}
+
+#Overlay {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(100, 100, 100, 0.3);
+    z-index: 100;
+    text-align: center;
+    display: none;
+}
+
+ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+ul span {
+    display: inline-block;
+    font-size: 4vh;
+    font-weight: bold;
+    color: #67c5ff;
+    min-width: 13vh;
+}
+
+#panel {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+    width: 90vw;
+    height: 75vh;
+    border: solid 0.5vmax #67c5ff;
+    background: #fff;
+    border-radius: 1vmax;
+}
+
+#panel-bottom {
+    position: absolute;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    margin: auto;
+}
+
+input[type="range"] {
+    -webkit-appearance: none;
+    appearance: none;
+    cursor: pointer;
+    outline: none;
+    height: 1.5vh;
+    width: 20vw;
+    margin: 4vh auto;
+    background: #fff;
+    border-radius: 0.6vmax;
+    border: solid 0.4vh #67c5ff;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    background: #d1edff;
+    border: solid 0.8vh #67c5ff;
+    width: 4vh;
+    height: 4vh; 
+    border-radius: 50%;
+    box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.15);
 }

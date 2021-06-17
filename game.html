@@ -12,33 +12,43 @@
             <p class="start-head">曲</p>
             <input type="radio" name="panel" value="0" id="upload-music" class="radio-input">
             <label for="upload-music" class="radio-label">
-                <input type="file" name="upload-btn" accept=".mp3" id="upload-music-file">
+                <label for="upload-music-file" class="upload-file">
+                    <input type="file" name="upload-btn" accept=".mp3" id="upload-music-file">
+                    <p>MP3ファイルを選択</p>
+                </label>
             </label>
             <input type="radio" name="panel" value="1" id="select-music" class="radio-input" checked="checked">
             <label for="select-music" class="radio-label">
-                <select name="select-music" id="select-music-file">
-                    <option value="BGM_d1.mp3" selected>サンプル</option>
-                    <option value="BGM_test01.mp3">サンプル2</option>
-                </select>
+                <div class="select-container">
+                    <select name="select-music" id="select-music-file" class="select-file">
+                        <option value="BGM_d1.mp3" selected>サンプル</option>
+                        <option value="BGM_test01.mp3">サンプル2</option>
+                    </select>
+                </div>
             </label>
         </form>
         <form name="csv" class="radio-form">
             <p class="start-head">譜面</p>
             <input type="radio" name="panel" value="2" id="upload-csv" class="radio-input">
             <label for="upload-csv" class="radio-label">
-                <input type="file" name="upload-btn" accept=".csv" id="upload-csv-file">
+                <label for="upload-csv-file" class="upload-file">
+                    <input type="file" name="upload-btn" accept=".csv" id="upload-csv-file">
+                    <p>CSVファイルを選択</p>
+                </label>
             </label>
             <input type="radio" name="panel" value="3" id="select-csv" class="radio-input" checked="checked">
             <label for="select-csv" class="radio-label">
-                <select name="select-csv" id="select-csv-file">
-                    <option value="sample" selected>サンプル</option>
-                    <option value="test1">テスト1</option>
-                    <option value="jujutsu">呪術廻戦</option>
-                </select>
+                <div class="select-container">
+                    <select name="select-csv" id="select-csv-file" class="select-file">
+                        <option value="sample" selected>サンプル</option>
+                        <option value="test1">テスト1</option>
+                        <option value="jujutsu">呪術廻戦</option>
+                    </select>
+                </div>
             </label>
         </form>
         <div>
-            <input type="submit" class="btn" value="ゲームスタート！" id="start-btn">
+            <a href="#" id="start-btn" class="btn">ゲームスタート！</a>
             <a href="index.html" class="btn">タイトルに戻る</a>
         </div>
     </div>
@@ -48,6 +58,8 @@
             <li><a href="#" class="btn btn-restart">最初から</a></li>
             <li><a href="game.html" class="btn">選択画面に戻る</a></li>
             <li><a href="index.html" class="btn">タイトルに戻る</a></li>
+            <li><span>BGM</span><input type="range" name="BGM-volume" id="BGM-slider" min="0" max="100"></li>
+            <li><span>SE</span><input type="range" name="SE-volume" id="SE-slider" min="0" max="100"></li>
         </ul>
     </div>
     <div id="resultOverlay">

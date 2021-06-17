@@ -130,7 +130,7 @@ function loadSE(sound) {
     REQ.responseType = 'arraybuffer';
     REQ.open('get', sound.url, true);
     REQ.onload = () => {
-        SCTX.decodeAudioData(
+        ACTX.decodeAudioData(
             REQ.response,
             function(data) {
                 sound.data = data;
@@ -146,12 +146,12 @@ function loadSE(sound) {
 
 //　ヒットSEを鳴らす
 function playSE(sound) {
-    if (!sound.data) {
-        return;
-    }
-    const BUFFER_SOURCE = SCTX.createBufferSource();
+    const BUFFER_SOURCE = ACTX.createBufferSource();
+    const GAIN = ACTX.createGain();
+    GAIN.gain.value = SOUND.seVolume;
     BUFFER_SOURCE.buffer = sound.data;
-    BUFFER_SOURCE.connect(SCTX.destination);
+    BUFFER_SOURCE.connect(GAIN);
+    GAIN.connect(ACTX.destination);
     BUFFER_SOURCE.start(0);
 }
 
@@ -174,11 +174,25 @@ function eventObserver() {
     BTN.restart[0].addEventListener('click', () => gameRestart());
     BTN.restart[1].addEventListener('click', () => gameRestart());
 
+    ELEMENT.BGMSlider.onchange = () => {
+        SOUND.bgmVolume = ELEMENT.BGMSlider.value / 200;
+        SOUND.bgm.volume = storage.bgmVolume = SOUND.bgmVolume;
+    };
+
+    ELEMENT.SESlider.onchange = () => {
+        SOUND.seVolume = ELEMENT.SESlider.value / 50;
+        storage.seVolume = SOUND.seVolume;
+    };
+
     window.addEventListener('blur', () => {
         if (gameActive && !gameFinish) {
             toggleGame();
         }
     });
+
+    window.onbeforeunload = () => {
+        localStorage['Music-Game'] = JSON.stringify(storage);
+    };
 }
 
 function toggleGame() {

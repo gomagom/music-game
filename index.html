@@ -8,8 +8,21 @@
 <body>
     <h1>CLOCK NOTES</h1>
     <div>
+        <a href="#" class="btn" id="btn-setting">設定</a>
         <a href="game.html" class="btn">ゲームを遊ぶ</a>
         <a href="editor.html" class="btn">譜面を作る</a>
     </div>
+    <div id="Overlay">
+        <div id="panel">
+            <ul>
+                <li><span>BGM</span><input type="range" name="BGM-volume" id="BGM-slider" min="0" max="100"></li>
+                <li><span>SE</span><input type="range" name="SE-volume" id="SE-slider" min="0" max="100"></li>
+            </ul>
+            <div id="panel-bottom">
+                <a href="#" class="btn" id="btn-return">戻る</a>
+            </div>
+        </div>
+    </div>
+    <script src="js/index/script.js"></script>
 </body>
 </html>
