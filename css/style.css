@@ -105,3 +105,26 @@ input[type="range"]::-webkit-slider-thumb {
     border-radius: 50%;
     box-shadow: 0px 3px 6px 0px rgba(0, 0, 0, 0.15);
 }
+
+.key-config {
+    display: inline-block;
+    min-width: 8vh;
+    height: 6vh;
+    margin: 2vh 1vw;
+    font-size: 4vh;
+    text-decoration: none;
+    color: #67c5ff;
+    border: solid 0.3vmax #67c5ff;
+    background: #fff;
+    border-radius: 0.6vmax;
+    transition: .3s;
+}
+
+.key-config:hover {
+    background: #67c5ff;
+    color: white;
+}
+
+.key-config-right {
+    margin-right: 10vh;
+}

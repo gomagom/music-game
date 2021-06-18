@@ -1,3 +1,4 @@
+// 
 function gameStart() {
     for (let i = 0; i < 4; i++) {
         BACK_LANE[i] = new BackLane(i);

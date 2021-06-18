@@ -79,17 +79,17 @@ class BackLane {
         const GRADE = [3]
         for (let i = 0; TARGET[i] && GRADE[0] === 3; i++) {
             GRADE[i] = TARGET[i].getGrade();
-            if (i > 0 && GRADE[i] === 3) {
+            if (i > 0 && GRADE[i] === 3) {  // 2つ目以降のノーツがbadの場合はそこで中断
                 break;
             }
             if (GRADE[i] < 3) {
-                playSE(SOUND.seList[0]);
+                playSE(SOUND.seList[0]);    // bad以外の判定ならばヒットSEを鳴らす
             } else {
-                playSE(SOUND.seList[1]);
+                playSE(SOUND.seList[1]);    // bad判定ならばバッドSEを鳴らす
             }
             updateGameScore(GRADE[i]);      // スコアを更新
-            JUDGE_LINE.drawGrade(GRADE[i]);
-            TARGET[i].close();          // 判定済みのノーツ処理を停止
+            JUDGE_LINE.drawGrade(GRADE[i]); // ノーツヒットのグレードを描画
+            TARGET[i].close();              // 判定済みのノーツ処理を停止
         }
     }
 
@@ -164,14 +164,16 @@ class SingleNote {
         }
     }
 
+    // 自身の状態を確認し、判定ラインを通り過ぎた場合に判定処理を止める
     update() {
         this.updateShow();
         if (!this.act) {
             return;
         }
 
+        // 判定ラインを
         if (this.reachTime < TIME.elapsed && !this.checkHit(NOTE.hitRange[3])) {
-            updateGameScore(3);
+            updateGameScore(3);         // badとしてスコア加算
             JUDGE_LINE.drawGrade(3);
             this.act = false;
         }

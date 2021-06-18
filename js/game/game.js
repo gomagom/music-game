@@ -143,11 +143,14 @@ window.onload = () => {
     } catch(e) {
         storage = {};
     }
-    if (storage.bgmVolume >= 0) {
-        SOUND.bgmVolume = storage.bgmVolume;
-    }
-    if (storage.seVolume >= 0) {
-        SOUND.seVolume = storage.seVolume;
+    for (const key in storage) {
+        if (key === 'lane') {
+            KEY[key] = storage[key];
+        } else if (key === 'pause') {
+            KEY[key] = storage[key];
+        } else {
+            SOUND[key] = storage[key];
+        }
     }
     ELEMENT.BGMSlider.value = SOUND.bgmVolume * 200;
     ELEMENT.SESlider.value = SOUND.seVolume * 50;
