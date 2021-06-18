@@ -108,9 +108,10 @@ input[type="range"]::-webkit-slider-thumb {
 
 .key-config {
     display: inline-block;
-    min-width: 8vh;
+    min-width: 6vh;
     height: 6vh;
     margin: 2vh 1vw;
+    padding: 0 1vh;
     font-size: 4vh;
     text-decoration: none;
     color: #67c5ff;

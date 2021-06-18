@@ -152,6 +152,7 @@ window.onload = () => {
             SOUND[key] = storage[key];
         }
     }
+    document.getElementById('info').textContent = `Pause : ${KEY.pause.toUpperCase()}`;
     ELEMENT.BGMSlider.value = SOUND.bgmVolume * 200;
     ELEMENT.SESlider.value = SOUND.seVolume * 50;
     gameInit();
