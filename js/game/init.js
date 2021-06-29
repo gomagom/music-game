@@ -31,18 +31,14 @@ function gameStart() {
 
 // 実行用の譜面を準備
 async function prepareMusicScore() {
-    let score
+    let score = null;
+
+    // CSVから読み込んだ譜面データを受け取る
     if (ELEMENT.uploadCSV.checked) {
         score = await importCSV();
     } else {
-        score = await getCSV(); // CSVから読み込んだ譜面データを受け取る
+        score = await getCSV();
     }
-
-    // 曲情報を格納
-    INFO.title = score[0][0];
-    INFO.bpm = score[0][1] - 0;
-    INFO.musicL = score[0][2] - 0;
-    INFO.musicStart = score[0][3] - 0;
 
     const LANE_DATA = cutMusicScore(score); // 譜面データをレーン毎のデータにする
 
@@ -76,16 +72,15 @@ function getCSV() {
 
 // CSVで読み込んだ文字データを2次元配列に格納
 function convertCSVtoArray(str) {
-    const RESULT = [];
-    const TMP = str.split('\r\n');                                  // 改行位置で分割して格納
-    TMP.forEach((val, index) => RESULT[index] = val.split(','));    // ','の位置で分割して格納
+    const TMP = str.split('\r\n');                              // 改行位置で分割して格納
+    INFO.title = TMP[0].split(',', 1)[0];                       // タイトル名を格納
+    const RESULT = TMP.map(val => val.split(',').map(Number));  // ','の位置で分割して格納
 
-    // 2行目以降の文字列を数値に変換
-    for (let i = 1; i < RESULT.length; i++) {
-        for (let j = 0; j < RESULT[i].length; j++) {
-            RESULT[i][j] = Number(RESULT[i][j]);
-        }
-    }
+    // 曲情報を格納
+    INFO.bpm = RESULT[0][1];
+    INFO.musicL = RESULT[0][2];
+    INFO.musicStart = RESULT[0][3];
+
     return RESULT;
 }
 
