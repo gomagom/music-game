@@ -5,27 +5,28 @@ function gameInit() {
     CAN.setAttribute('style', 'display:block;margin:auto;background-color: #e6afcf');
     CTX.lineWidth = LINE_WIDTH;
 
-    BTN.start.addEventListener('click', () => {
-        if ((ELEMENT.uploadCSV.checked && !ELEMENT.uploadCSVFile.files[0])
-         || (ELEMENT.uploadMusic.checked && !ELEMENT.uploadMusicFile.files[0])) {
+    btn.start.addEventListener('click', () => {
+        if ((element.uploadCSV.checked && !element.uploadCSVFile.files[0])
+         || (element.uploadMusic.checked && !element.uploadMusicFile.files[0])) {
             alert('ファイルを選択してください');
             return;
         }
         gameStart();
         eventObserver();
-        ELEMENT.startOverlay.style.display = "none";
+        element.startOverlay.style.display = "none";
     });
 }
 
 // 必要なデータを準備し、ゲームループを開始
 function gameStart() {
+    gameScore = new GameScoreManager();
     for (let i = 0; i < 4; i++) {
         BACK_LANE[i] = new BackLane(i);
     }
     prepareMusicScore();
     prepareMusicFile();
-    SOUND.seList.forEach(loadSE);
-    TIME.start = Date.now();
+    sound.seList.forEach(loadSE);
+    time.start = Date.now();
     gameLoop();
 }
 
@@ -34,7 +35,7 @@ async function prepareMusicScore() {
     let score = null;
 
     // CSVから読み込んだ譜面データを受け取る
-    if (ELEMENT.uploadCSV.checked) {
+    if (element.uploadCSV.checked) {
         score = await importCSV();
     } else {
         score = await getCSV();
@@ -48,7 +49,7 @@ async function prepareMusicScore() {
 // ローカルのCSVファイルを読み込む
 function importCSV() {
     return new Promise((resolve) => {
-        const FILE = ELEMENT.uploadCSVFile;
+        const FILE = element.uploadCSVFile;
         const READER = new FileReader();
         READER.readAsText(FILE.files[0]);
         READER.addEventListener('load', () => {
@@ -73,13 +74,13 @@ function getCSV() {
 // CSVで読み込んだ文字データを2次元配列に格納
 function convertCSVtoArray(str) {
     const TMP = str.split('\r\n');                              // 改行位置で分割して格納
-    INFO.title = TMP[0].split(',', 1)[0];                       // タイトル名を格納
+    info.title = TMP[0].split(',', 1)[0];                       // タイトル名を格納
     const RESULT = TMP.map(val => val.split(',').map(Number));  // ','の位置で分割して格納
 
     // 曲情報を格納
-    INFO.bpm = RESULT[0][1];
-    INFO.musicL = RESULT[0][2];
-    INFO.musicStart = RESULT[0][3];
+    info.bpm = RESULT[0][1];
+    info.musicL = RESULT[0][2];
+    info.musicStart = RESULT[0][3];
 
     return RESULT;
 }
@@ -90,7 +91,7 @@ function cutMusicScore(arr) {
 
     arr.shift();                                        // 曲情報を含む先頭行を削除
     arr.sort((first, second) => first[3] - second[3]);  // 到達時間順に並べ替える
-    TIME.end = arr[arr.length - 1][3] + 1500;
+    time.end = arr[arr.length - 1][3] + 1500;
 
     // レーン番号を元に分ける
     for (let i = 0; i < DATA.length; i++) {
@@ -103,23 +104,23 @@ function cutMusicScore(arr) {
 // ゲーム用の音楽ファイルを準備
 async function prepareMusicFile() {
     let src;
-    if (ELEMENT.uploadMusic.checked) {
+    if (element.uploadMusic.checked) {
         src = await importMusic();
     } else {
         src = await getMusic();
     }
-    if (!SOUND.bgm) {
-        SOUND.bgm = new Audio(src);
+    if (!sound.bgm) {
+        sound.bgm = new Audio(src);
     }
-    SOUND.bgm.volume = SOUND.bgmVolume;
-    SOUND.bgm.currentTime = 0;
-    SOUND.bgm.play();
+    sound.bgm.volume = sound.bgmVolume;
+    sound.bgm.currentTime = 0;
+    sound.bgm.play();
 }
 
 // ローカルの楽曲ファイルを読み込む
 function importMusic() {
     return new Promise((resolve) => {
-        const SELECT = ELEMENT.uploadMusicFile;
+        const SELECT = element.uploadMusicFile;
         const SRC = window.URL.createObjectURL(SELECT.files[0]);
         resolve(SRC);
     });
@@ -135,15 +136,15 @@ function getMusic() {
 }
 
 // SEを読み込む
-function loadSE(sound) {
+function loadSE(soundKey) {
     const REQ = new XMLHttpRequest();
     REQ.responseType = 'arraybuffer';
-    REQ.open('get', sound.url, true);
+    REQ.open('get', soundKey.url, true);
     REQ.addEventListener('load', () => {
         ACTX.decodeAudioData(
             REQ.response,
             function(data) {
-                sound.data = data;
+                soundKey.data = data;
             },
             function(e) {
                 alert(e.err);

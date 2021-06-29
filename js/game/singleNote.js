@@ -1,9 +1,9 @@
 class SingleNote {
     constructor(speed, reachTime) {
-        this.height = NOTE.height;
-        this.width = NOTE.width;
-        this.frameColor = 'rgb(' + NOTE.frameColor + ')';
-        this.bodyColor = 'rgba(' + NOTE.bodyColor + ')';
+        this.height = note.height;
+        this.width = note.width;
+        this.frameColor = 'rgb(' + note.frameColor + ')';
+        this.bodyColor = 'rgba(' + note.bodyColor + ')';
         this.canterY = -this.height;
         this.speed = speed;             // px/ms
         this.reachTime = reachTime;     // ゲーム開始時からjudgeLineに到達するまでの時間
@@ -17,7 +17,7 @@ class SingleNote {
     getGrade() {
         let grade = 3;
         for (let i = 2; i >= 0; i--) {
-            if (this.checkHit(NOTE.hitRange[i])) {
+            if (this.checkHit(note.hitRange[i])) {
                 grade = i;
             }
         }
@@ -26,7 +26,7 @@ class SingleNote {
 
     // 自身がヒットしているか判定
     checkHit(range) {
-        if (this.act && Math.abs(TIME.elapsed - this.reachTime) <= range) {
+        if (this.act && Math.abs(time.elapsed - this.reachTime) <= range) {
             return true;
         } else {
             return false;
@@ -36,7 +36,7 @@ class SingleNote {
     // canvas内に入った段階で描画フラグを立てる
     updateShow() {
         if (this.act || this.show) {
-            if (this.appearTime <= TIME.elapsed && TIME.elapsed <= this.hideTime) {
+            if (this.appearTime <= time.elapsed && time.elapsed <= this.hideTime) {
                 this.show = true;
             } else {
                 this.show = false;
@@ -52,8 +52,8 @@ class SingleNote {
         }
 
         // 判定ラインを
-        if (this.reachTime < TIME.elapsed && !this.checkHit(NOTE.hitRange[3])) {
-            updateGameScore(3);         // badとしてスコア加算
+        if (this.reachTime < time.elapsed && !this.checkHit(note.hitRange[3])) {
+            gameScore.calcScore(3);         // badとしてスコア加算
             JUDGE_LINE.drawGrade(3);
             this.act = false;
         }
@@ -61,7 +61,7 @@ class SingleNote {
 
     draw(x) {
         if (this.show) {
-            this.centerY = JUDGE_LINE.centerY - (this.reachTime - TIME.elapsed) * this.speed;
+            this.centerY = JUDGE_LINE.centerY - (this.reachTime - time.elapsed) * this.speed;
             CTX.fillStyle = this.bodyColor;
             CTX.fillRect(x, this.centerY - this.height / 2, this.width, this.height);
             CTX.strokeStyle = this.frameColor;
