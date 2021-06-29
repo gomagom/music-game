@@ -30,7 +30,7 @@ const SOUND = {
     bgmVolume: 0.25,
     seVolume: 1,
     data: null
-}
+};
 
 const SCORE = {
     point: 0,
@@ -62,7 +62,7 @@ const BTN = {
     start: document.getElementById('start-btn'),
     continue: document.getElementById('btn-continue'),
     restart: document.getElementsByClassName('btn-restart')
-}
+};
 
 const ELEMENT = {
     startOverlay: document.getElementById('startOverlay'),
@@ -73,7 +73,7 @@ const ELEMENT = {
     uploadStr: this.startOverlay.getElementsByTagName('p'),
     BGMSlider: document.getElementById('BGM-slider'),
     SESlider: document.getElementById('SE-slider')
-}
+};
 
 const CAN = document.getElementById("can");
 const CTX = CAN.getContext("2d");
@@ -88,6 +88,7 @@ let storage = null;
 let gameActive = true;
 let gameFinish = false;
 
+// ゲームの起点となる
 window.addEventListener('load', () => {
     ELEMENT.uploadMusicFile.addEventListener('change', () => {
         ELEMENT.uploadStr[1].textContent = ELEMENT.uploadMusicFile.files[0].name;
@@ -115,15 +116,16 @@ window.addEventListener('load', () => {
     gameInit();
 });
 
+// リザルト画面を表示する
 function showResult() {
     gameFinish = true;
     gameActive = false;
 
     SCORE.point = Math.floor(SCORE.point);
-    const INFO = document.getElementsByClassName('result-info');
+    const RESULT_INFO = document.getElementsByClassName('result-info');
     const LIST = ['point', 'perfect', 'great', 'good', 'bad', 'maxCombo'];
     const STR = ['Score', 'Perfect', 'Great', 'Good', 'Bad', 'MaxCombo'];
-    LIST.forEach((val, index) => INFO[index].textContent = `${STR[index]} : ${SCORE[LIST[index]]}`);
+    LIST.forEach((val, index) => RESULT_INFO[index].textContent = `${STR[index]} : ${SCORE[LIST[index]]}`);
 
     document.getElementById('resultOverlay').style.display = "block";
 }
