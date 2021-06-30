@@ -79,34 +79,6 @@ let storage = null;
 let gameActive = true;
 let gameFinish = false;
 
-// ゲームの起点となる
-window.addEventListener('load', () => {
-    element.uploadMusicFile.addEventListener('change', () => {
-        element.uploadStr[1].textContent = element.uploadMusicFile.files[0].name;
-    });
-    element.uploadCSVFile.addEventListener('change', () => {
-        element.uploadStr[3].textContent = element.uploadCSVFile.files[0].name;
-    });
-    try {
-        storage = JSON.parse(localStorage['Music-Game'] || '{}');
-        for (const key in storage) {
-            if (key === 'lane') {
-                inputKey[key] = storage[key];
-            } else if (key === 'pause') {
-                inputKey[key] = storage[key];
-            } else {
-                sound[key] = storage[key];
-            }
-        }
-    } catch(e) {
-        storage = {};
-    }
-    document.getElementById('info').textContent = `Pause : ${inputKey.pause.toUpperCase()}`;
-    element.BGMSlider.value = sound.bgmVolume * 200;
-    element.SESlider.value = sound.seVolume * 50;
-    gameInit();
-});
-
 // リザルト画面を表示する
 function showResult() {
     gameFinish = true;
@@ -134,3 +106,31 @@ function showDebugInfo() {
     CTX.fillText(time.elapsed, 1750, 100);
     CTX.fillText(time.stopped, 1750, 220)
 }
+
+// ゲームの起点となる
+window.addEventListener('load', () => {
+    element.uploadMusicFile.addEventListener('change', () => {
+        element.uploadStr[1].textContent = element.uploadMusicFile.files[0].name;
+    });
+    element.uploadCSVFile.addEventListener('change', () => {
+        element.uploadStr[3].textContent = element.uploadCSVFile.files[0].name;
+    });
+    try {
+        storage = JSON.parse(localStorage['Music-Game'] || '{}');
+        for (const key in storage) {
+            if (key === 'lane') {
+                inputKey[key] = storage[key];
+            } else if (key === 'pause') {
+                inputKey[key] = storage[key];
+            } else {
+                sound[key] = storage[key];
+            }
+        }
+    } catch(e) {
+        storage = {};
+    }
+    document.getElementById('info').textContent = `Pause : ${inputKey.pause.toUpperCase()}`;
+    element.BGMSlider.value = sound.bgmVolume * 200;
+    element.SESlider.value = sound.seVolume * 50;
+    gameInit();
+});

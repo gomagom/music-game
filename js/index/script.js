@@ -4,7 +4,7 @@ const SETTING = document.getElementById('btn-setting');
 const RETURN = document.getElementById('btn-return');
 const RESET = document.getElementById('btn-reset');
 const OVERLAY = document.getElementById('Overlay');
-const SOUND = {
+const sound = {
     bgmVolume: document.getElementById('BGM-slider'),
     seVolume: document.getElementById('SE-slider')
 };
@@ -27,10 +27,10 @@ window.addEventListener('load', () => {
             KEY_CONFIG[4].textContent = storage.pause.toUpperCase();
         }
         if (storage.bgmVolume >= 0) {
-            SOUND.bgmVolume.value = storage.bgmVolume * 200;
+            sound.bgmVolume.value = storage.bgmVolume * 200;
         }
         if (storage.seVolume >= 0) {
-            SOUND.seVolume.value = storage.seVolume * 50;
+            sound.seVolume.value = storage.seVolume * 50;
         }
     } catch(e) {
         storage = {};
@@ -38,22 +38,21 @@ window.addEventListener('load', () => {
 });
 
 window.addEventListener('beforeunload', () => {
-    const LANE = [
+    storage.lane = [
         KEY_CONFIG[0].textContent.toLowerCase(),
         KEY_CONFIG[1].textContent.toLowerCase(),
         KEY_CONFIG[2].textContent.toLowerCase(),
         KEY_CONFIG[3].textContent.toLowerCase()
     ];
-    storage.lane = LANE;
     storage.pause = KEY_CONFIG[4].textContent.toLowerCase();
-    storage.bgmVolume = SOUND.bgmVolume.value / 200;
-    storage.seVolume = SOUND.seVolume.value / 50;
+    storage.bgmVolume = sound.bgmVolume.value / 200;
+    storage.seVolume = sound.seVolume.value / 50;
     localStorage['Music-Game'] = JSON.stringify(storage);
 });
 
 RESET.addEventListener('click', () => {
-    SOUND.bgmVolume.value = 50;
-    SOUND.seVolume.value = 50;
+    sound.bgmVolume.value = 50;
+    sound.seVolume.value = 50;
     DEFAULT_KEY.forEach((val, index) => KEY_CONFIG[index].textContent = val.toUpperCase());
 });
 

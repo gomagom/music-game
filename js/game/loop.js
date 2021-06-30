@@ -26,9 +26,10 @@ function gameLoop() {
 // ゲーム内の経過時間と稼働時間を計算
 function calcElapsedTime() {
     time.elapsedAll = Date.now() - time.start;
-    time.elapsed = time.elapsedAll - time.stopped;
+    time.elapsed = time.elapsedAll - time.stopped;  // 経過時間には停止時間を含まない
 }
 
+// ゲームの合計停止時間を計算
 function calcStoppedTime() {
     time.stopped = Date.now() - time.start - time.elapsed;
 }
@@ -60,9 +61,9 @@ function eventObserver() {
 
     document.addEventListener('keyup', e => inputKey.status[e.key] = false); //キーが離された時
 
-    btn.continue.addEventListener('click', () => toggleGame());
-    btn.restart[0].addEventListener('click', () => gameRestart());
-    btn.restart[1].addEventListener('click', () => gameRestart());
+    btn.continue.addEventListener('click', toggleGame);
+    btn.restart[0].addEventListener('click', gameRestart);
+    btn.restart[1].addEventListener('click', gameRestart);
 
     element.BGMSlider.addEventListener('change', () => {
         sound.bgmVolume = element.BGMSlider.value / 200;
