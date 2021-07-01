@@ -18,14 +18,15 @@ function gameInit() {
 }
 
 // 必要なデータを準備し、ゲームループを開始
-function gameStart() {
+async function gameStart() {
     gameScore = new GameScoreManager();
     for (let i = 0; i < 4; i++) {
         BACK_LANE[i] = new BackLane(i);
     }
-    prepareMusicScore();
-    prepareMusicFile();
+    await prepareMusicScore();
+    await prepareMusicFile();
     sound.seList.forEach(loadSE);
+    sound.bgm.play();
     time.start = Date.now();
     gameLoop();
 }
@@ -44,6 +45,8 @@ async function prepareMusicScore() {
     const LANE_DATA = cutMusicScore(score); // 譜面データをレーン毎のデータにする
 
     BACK_LANE.forEach((val, index) => val.generateNote(LANE_DATA[index]));
+
+    return 1;
 }
 
 // ローカルのCSVファイルを読み込む
@@ -114,7 +117,8 @@ async function prepareMusicFile() {
     }
     sound.bgm.volume = sound.bgmVolume;
     sound.bgm.currentTime = 0;
-    sound.bgm.play();
+
+    return 1;
 }
 
 // ローカルの楽曲ファイルを読み込む

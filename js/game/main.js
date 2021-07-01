@@ -71,10 +71,10 @@ const CANVAS_W = 2160;
 const CANVAS_H = 2160;
 const LINE_WIDTH = 10;
 const BACK_LANE = [];
-let gameScore = null;
-const JUDGE_LINE = new JudgeLine();
 window.AudioContext = window.AudioContext || window.webkitAudioContext;
 const ACTX = new AudioContext();
+const JUDGE_LINE = new JudgeLine();
+let gameScore = null;
 let storage = null;
 let gameActive = true;
 let gameFinish = false;
@@ -127,7 +127,7 @@ window.addEventListener('load', () => {
             }
         }
     } catch(e) {
-        storage = {};
+        window.location.href = '../../index.html';
     }
     document.getElementById('info').textContent = `Pause : ${inputKey.pause.toUpperCase()}`;
     element.BGMSlider.value = sound.bgmVolume * 200;

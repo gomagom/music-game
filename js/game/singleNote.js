@@ -33,7 +33,7 @@ class SingleNote {
         }
     }
 
-    // canvas内に入った段階で描画フラグを立てる
+    // canvas内に入った段階で描画フラグを立てる
     updateShow() {
         if (this.act || this.show) {
             if (this.appearTime <= time.elapsed && time.elapsed <= this.hideTime) {

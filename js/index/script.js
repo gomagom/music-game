@@ -33,7 +33,7 @@ window.addEventListener('load', () => {
             sound.seVolume.value = storage.seVolume * 50;
         }
     } catch(e) {
-        storage = {};
+        window.location.href = '../../index.html';
     }
 });
 
