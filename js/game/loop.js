@@ -106,9 +106,10 @@ function gameRestart() {
         time[key] = 0;
     }
     gameFinish = false;
-    toggleGame();
-    gameStart();
+    gameActive = true;
+    document.getElementById('pauseOverlay').style.display = "none";
     document.getElementById('resultOverlay').style.display = "none";
+    gameStart();
 }
 
 // コンボ数を描画する
