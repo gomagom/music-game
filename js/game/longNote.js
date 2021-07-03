@@ -1,5 +1,5 @@
 class LongNote {
-    constructor(speed, reachTime) {
+  constructor(speed, reachTime) {
 
-    }
+  }
 }
