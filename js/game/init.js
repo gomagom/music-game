@@ -30,6 +30,10 @@ function gameInit() {
   CAN.height = CANVAS_H;
   CTX.lineWidth = LINE_WIDTH;
 
+  BACK_LANE.forEach(val => val.draw());
+  JUDGE_LINE.draw();
+
+  // スタートボタンが押されたら発火
   btn.start.addEventListener('click', async () => {
     if ((element.uploadCSV.checked && !element.uploadCSVFile.files[0])
       || (element.uploadMusic.checked && !element.uploadMusicFile.files[0])) {
@@ -63,7 +67,7 @@ function gameStart() {
 
 // ゲーム開始時の説明文を表示
 function drawDesc() {
-  const DESC_TEXT = ['Press any key', 'to start!'];
+  const DESC_TEXT = ['Press any key', 'to start'];
   CTX.save();
   CTX.font = '200px Arial Black';
   CTX.fillStyle = '#e4007f';

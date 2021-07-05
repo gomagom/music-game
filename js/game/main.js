@@ -16,7 +16,7 @@ const lane = {
 const note = {
   width: lane.width,      // ノーツの幅(px)
   height: 100,
-  hitRange: [40, 70, 120, 220],   // 判定の範囲(±ms)
+  hitRange: [30, 60, 120, 240],   // 判定の範囲(±ms)
   frameColor: [0, 174, 239],
   bodyColor: [0, 174, 239, 0.8]
 };
@@ -69,6 +69,9 @@ let loopReq = null;
 
 // リザルト画面を表示する
 function showResult() {
+  if (time.end > time.elapsed || !time.end) {
+    return;
+  }
   cancelAnimationFrame(loopReq);
   gameFinish = true;
   gameActive = false;
@@ -80,20 +83,6 @@ function showResult() {
   LIST.forEach((val, index) => RESULT_INFO[index].textContent = `${STR[index]} : ${gameScore[LIST[index]]}`);
 
   document.getElementById('resultOverlay').style.display = "block";
-}
-
-// デバック用の情報を表示する
-function showDebugInfo() {
-  CTX.font = '100px Impact';
-  CTX.fillStyle = 'black';
-  CTX.fillText(gameScore.perfect, 20, 100);
-  CTX.fillText(gameScore.great, 20, 220)
-  CTX.fillText(gameScore.good, 20, 340);
-  CTX.fillText(gameScore.bad, 20, 460);
-  CTX.fillText(gameScore.combo, 20, 580);
-  CTX.fillText(gameScore.maxCombo, 20, 700);
-  CTX.fillText(time.elapsed, 1750, 100);
-  CTX.fillText(time.stopped, 1750, 220)
 }
 
 window.addEventListener('load', () => {

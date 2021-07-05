@@ -7,14 +7,10 @@ function gameLoop() {
   }
 
   BACK_LANE.forEach(val => val.update());
-
   drawOnCanvas();
+  loopReq = window.requestAnimationFrame(gameLoop);
 
-  if (time.end > time.elapsed || !time.end) {
-    loopReq = window.requestAnimationFrame(gameLoop);
-  } else {
-    showResult();
-  }
+  showResult();
 }
 
 // 描画を管理
@@ -24,8 +20,6 @@ function drawOnCanvas() {
   JUDGE_LINE.draw();
   BACK_LANE.forEach(val => val.drawNote());
   drawCombo();
-
-  showDebugInfo();     // デバッグ用データ描画
 }
 
 // コンボ数を描画する
