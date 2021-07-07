@@ -5,8 +5,8 @@ class SingleNote {
     this.frameColor = 'rgb(' + note.frameColor + ')';
     this.bodyColor = 'rgba(' + note.bodyColor + ')';
     this.canterY = -this.height;
-    this.speed = speed;             // px/ms
-    this.reachTime = reachTime;     // ゲーム開始時からjudgeLineに到達するまでの時間
+    this.speed = speed * note.speedRatio;             // px/ms
+    this.reachTime = reachTime + note.delay;     // ゲーム開始時からjudgeLineに到達するまでの時間
     this.appearTime = this.reachTime - (JUDGE_LINE.centerY + this.height / 2) / this.speed; // canvasに入る時間
     this.hideTime = this.reachTime + (CANVAS_H - JUDGE_LINE.centerY + this.height / 2) / this.speed;    // canvasから出る時間
     this.act = true;                // 自身がヒット処理対象かどうか

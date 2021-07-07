@@ -12,7 +12,7 @@ class soundManager {
   // ゲーム用の音楽ファイルを準備
   async prepareFile() {
     let src;
-    if (element.uploadMusic.checked) {
+    if (element.uploadMusicType.checked) {
       src = await this.importMusic();
     } else {
       src = await this.getMusic();

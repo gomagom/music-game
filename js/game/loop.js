@@ -94,12 +94,12 @@ function toggleGame() {
   if (gameActive) {
     gameActive = false;
     sound.bgm.pause();
-    document.getElementById('pauseOverlay').style.display = "block";
+    element.pauseOverlay.style.display = "block";
   } else {
     gameActive = true;
     sound.bgm.currentTime = time.elapsed / 1000;
     sound.bgm.play();
-    document.getElementById('pauseOverlay').style.display = "none";
+    element.pauseOverlay.style.display = "none";
   }
 }
 
@@ -115,7 +115,7 @@ function gameRestart() {
   JUDGE_LINE.reset();
   sound.bgm.pause();
   gameFinish = true;
-  document.getElementById('pauseOverlay').style.display = "none";
-  document.getElementById('resultOverlay').style.display = "none";
+  element.pauseOverlay.style.display = "none";
+  element.resultOverlay.style.display = "none";
   gameStart();
 }

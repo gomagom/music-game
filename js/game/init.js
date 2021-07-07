@@ -1,5 +1,23 @@
 // ゲームの初期化を行う
 function gameInit() {
+  element.uploadMusicType.addEventListener('change', () => {
+    if (element.uploadMusicType.checked) {
+      element.uploadMusic.style.display = 'flex';
+      element.selectMusic.style.display = 'none';
+    } else {
+      element.uploadMusic.style.display = 'none';
+      element.selectMusic.style.display = 'flex';
+    }
+  });
+  element.uploadCSVType.addEventListener('change', () => {
+    if (element.uploadCSVType.checked) {
+      element.uploadCSV.style.display = 'flex';
+      element.selectCSV.style.display = 'none';
+    } else {
+      element.uploadCSV.style.display = 'none';
+      element.selectCSV.style.display = 'flex';
+    }
+  });
   element.uploadMusicFile.addEventListener('change', () => {
     element.uploadStr[1].textContent = element.uploadMusicFile.files[0].name;
   });
@@ -12,6 +30,8 @@ function gameInit() {
     for (const key in storage) {
       if (key === 'lane') {
         inputKey[key] = storage[key];
+      } else if (key === 'delay' || key === 'speed') {
+        note[key] = storage[key];
       } else if (key === 'pause') {
         inputKey[key] = storage[key];
       } else {
@@ -35,8 +55,8 @@ function gameInit() {
 
   // スタートボタンが押されたら発火
   btn.start.addEventListener('click', async () => {
-    if ((element.uploadCSV.checked && !element.uploadCSVFile.files[0])
-      || (element.uploadMusic.checked && !element.uploadMusicFile.files[0])) {
+    if ((element.uploadCSVType.checked && !element.uploadCSVFile.files[0])
+      || (element.uploadMusicType.checked && !element.uploadMusicFile.files[0])) {
       alert('ファイルを選択してください');
       return;
     }

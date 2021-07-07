@@ -1,79 +1,112 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
+
 <head>
-  <meta charset="utf-8">
+  <meta charset="UTF-8">
   <link rel="stylesheet" href="css/game.css">
   <title>Play - CLOCK NOTES</title>
 </head>
+
 <body>
-  <p id="info">Pause : P</p>
-  <canvas id="can"></canvas>
-  <div id="startOverlay">
-    <form name="music" class="radio-form">
-      <p class="start-head">曲</p>
-      <input type="radio" name="panel" value="0" id="upload-music" class="radio-input">
-      <label for="upload-music" class="radio-label">
-        <label for="upload-music-file" class="upload-file">
-          <input type="file" name="upload-btn" accept=".mp3" id="upload-music-file">
-          <p>MP3ファイルを選択</p>
-        </label>
-      </label>
-      <input type="radio" name="panel" value="1" id="select-music" class="radio-input" checked="checked">
-      <label for="select-music" class="radio-label">
-        <div class="select-container">
-          <select name="select-music" id="select-music-file" class="select-file">
-            <option value="bgm_sample1.mp3" selected>サンプル1</option>
-            <option value="bgm_sample2.mp3">サンプル2</option>
-            <option value="bgm_sample3.mp3">サンプル3</option>
-          </select>
+  <div id="game">
+    <p id="info">Pause : P</p>
+    <canvas id="can"></canvas>
+  </div>
+
+  <div id="start-overlay" class="overlay">
+    <div class="column-container container">
+      <div class="item-music container column-container">
+        <h1>曲を選択してください</h1>
+
+        <div class="select-type">
+          <input type="checkbox" class="checkbox" id="music-file-type">
+          <div class="knobs">
+            <span>サンプル</span>
+          </div>
+          <div class="layer"></div>
         </div>
-      </label>
-    </form>
-    <form name="csv" class="radio-form">
-      <p class="start-head">譜面</p>
-      <input type="radio" name="panel" value="2" id="upload-csv" class="radio-input">
-      <label for="upload-csv" class="radio-label">
-        <label for="upload-csv-file" class="upload-file">
-          <input type="file" name="upload-btn" accept=".csv" id="upload-csv-file">
-          <p>CSVファイルを選択</p>
-        </label>
-      </label>
-      <input type="radio" name="panel" value="3" id="select-csv" class="radio-input" checked="checked">
-      <label for="select-csv" class="radio-label">
-        <div class="select-container">
-          <select name="select-csv" id="select-csv-file" class="select-file">
-            <option value="sample1" selected>サンプル1</option>
-            <option value="sample2">サンプル2</option>
-            <option value="sample3">サンプル3</option>
-          </select>
+
+        <div class="music-file">
+          <div class="container" id="upload-music">
+            <label class="upload-file">
+              <input type="file" id="upload-music-file" accept=".mp3">
+              <span>MP3ファイルを選択</span>
+            </label>
+          </div>
+
+          <div class="container select-container" id="select-music">
+            <label class="select-label">
+              <select class="select-file" id="select-music-file">
+                <option value="bgm_sample1.mp3" selected>サンプル1</option>
+                <option value="bgm_sample2.mp3">サンプル2</option>
+                <option value="bgm_sample3.mp3">サンプル3</option>
+              </select>
+            </label>
+          </div>
         </div>
-      </label>
-    </form>
-    <div>
-      <a href="#" id="start-btn" class="btn">ゲームスタート！</a>
-      <a href="index.html" class="btn">タイトルに戻る</a>
+      </div>
+
+      <div class="item-css container column-container">
+        <h1>譜面を選択してください</h1>
+
+        <div class="select-type">
+          <input type="checkbox" class="checkbox" id="csv-file-type">
+          <div class="knobs">
+            <span>サンプル</span>
+          </div>
+          <div class="layer"></div>
+        </div>
+
+        <div class="music-file">
+          <div class="container" id="upload-csv">
+            <label class="upload-file">
+              <input type="file" id="upload-csv-file" accept=".csv">
+              <span>CSVファイルを選択</span>
+            </label>
+          </div>
+
+          <div class="container select-container" id="select-csv">
+            <label class="select-label">
+              <select class="select-file" id="select-csv-file">
+                <option value="sample1" selected>サンプル1</option>
+                <option value="sample2">サンプル2</option>
+                <option value="sample3">サンプル3</option>
+              </select>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="row-container container button-panel">
+        <a class="btn" id="btn-start">ゲームスタート！</a>
+        <a href="index.html" class="btn">タイトルに戻る</a>
+      </div>
     </div>
   </div>
-  <div id="pauseOverlay">
-    <ul>
-      <li><a href="#" id="btn-continue" class="btn">続ける</a></li>
-      <li><a href="#" class="btn btn-restart">やり直す</a></li>
+
+  <div id="pause-overlay" class="overlay">
+    <ul class="container column-container">
+      <li><a class="btn" id="btn-continue">続ける</a></li>
+      <li><a class="btn btn-restart">やり直す</a></li>
       <li><a href="game.html" class="btn">選択画面に戻る</a></li>
       <li><a href="index.html" class="btn">タイトルに戻る</a></li>
       <li><span>BGM</span><input type="range" name="BGM-volume" id="BGM-slider" min="0" max="100"></li>
       <li><span>SE</span><input type="range" name="SE-volume" id="SE-slider" min="0" max="100"></li>
     </ul>
   </div>
-  <div id="resultOverlay">
-    <div id="result-panel">
-      <p class="result-info" id="result-score">Score</p>
-      <p class="result-info"></p>
-      <p class="result-info"></p>
-      <p class="result-info"></p>
-      <p class="result-info"></p>
-      <p class="result-info"></p>
-      <div id="panel-bottom">
-        <a href="#" class="btn btn-restart">はじめから</a>
+
+  <div id="result-overlay" class="overlay container">
+    <div class="result-panel container column-container">
+      <div class="panel-top">
+        <p class="result-info" id="result-score">Score</p>
+        <p class="result-info">0</p>
+        <p class="result-info">0</p>
+        <p class="result-info">0</p>
+        <p class="result-info">0</p>
+        <p class="result-info">0</p>
+      </div>
+      <div class="panel-bottom">
+        <a class="btn btn-restart">はじめから</a>
         <a href="game.html" class="btn">選択画面に戻る</a>
         <a href="index.html" class="btn">タイトルに戻る</a>
       </div>
@@ -90,4 +123,5 @@
   <script src="js/game/loop.js"></script>
   <script src="js/game/main.js"></script>
 </body>
+
 </html>

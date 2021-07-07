@@ -18,7 +18,9 @@ const note = {
   height: 100,
   hitRange: [30, 60, 120, 240],   // 判定の範囲(±ms)
   frameColor: [0, 174, 239],
-  bodyColor: [0, 174, 239, 0.8]
+  bodyColor: [0, 174, 239, 0.8],
+  speedRatio: 1,
+  delay: 0
 };
 
 const time = {
@@ -31,18 +33,24 @@ const time = {
 };
 
 const btn = {
-  start: document.getElementById('start-btn'),
+  start: document.getElementById('btn-start'),
   continue: document.getElementById('btn-continue'),
   restart: document.getElementsByClassName('btn-restart')
 };
 
 const element = {
-  startOverlay: document.getElementById('startOverlay'),
-  uploadCSV: document.getElementById('upload-csv'),
+  startOverlay: document.getElementById('start-overlay'),
+  pauseOverlay: document.getElementById('pause-overlay'),
+  resultOverlay: document.getElementById('result-overlay'),
+  uploadCSVType: document.getElementById('csv-file-type'),
   uploadCSVFile: document.getElementById('upload-csv-file'),
-  uploadMusic: document.getElementById('upload-music'),
+  uploadMusicType: document.getElementById('music-file-type'),
   uploadMusicFile: document.getElementById('upload-music-file'),
-  uploadStr: this.startOverlay.getElementsByTagName('p'),
+  uploadStr: document.getElementById('start-overlay').getElementsByTagName('span'),
+  uploadMusic: document.getElementById('upload-music'),
+  uploadCSV: document.getElementById('upload-csv'),
+  selectMusic: document.getElementById('select-music'),
+  selectCSV: document.getElementById('select-csv'),
   BGMSlider: document.getElementById('BGM-slider'),
   SESlider: document.getElementById('SE-slider')
 };
@@ -82,7 +90,7 @@ function showResult() {
   const STR = ['Score', 'Perfect', 'Great', 'Good', 'Bad', 'MaxCombo'];
   LIST.forEach((val, index) => RESULT_INFO[index].textContent = `${STR[index]} : ${gameScore[LIST[index]]}`);
 
-  document.getElementById('resultOverlay').style.display = "block";
+  element.resultOverlay.style.display = "flex";
 }
 
 window.addEventListener('load', () => {

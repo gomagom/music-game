@@ -7,7 +7,7 @@ class musicalScoreManager {
   // 実行用の譜面を準備
   async prepareScore() {
     // CSVから読み込んだ譜面データを受け取る
-    if (element.uploadCSV.checked) {
+    if (element.uploadCSVType.checked) {
       this.wholeScore = await this.importCSV();
     } else {
       this.wholeScore = await this.getCSV();
