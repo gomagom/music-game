@@ -79,7 +79,7 @@ body {
   font-size: 4vmin;
 }
 
-#start-overlay > div {
+#start-overlay>div {
   width: 100%;
   height: 100%;
 }
@@ -107,8 +107,8 @@ body {
   margin-top: 4vmin;
   text-align: center;
   background-color: #fff;
-  border: solid 1vh #67c5ff;
-  border-radius: 10vh;
+  border: solid 1vmin #67c5ff;
+  border-radius: 8vmin;
   font-size: 4vmin;
 }
 
@@ -116,7 +116,7 @@ body {
   font-size: 4vmin;
   font-weight: bold;
   color: #67c5ff;
-  margin: 0.5em 0 0 0;
+  margin: 0.5em 0;
 }
 
 .select-type {
@@ -264,6 +264,7 @@ input[type="file"] {
 }
 
 .select-file option {
+  font-weight: bold;
   background-color: white;
 }
 
@@ -346,9 +347,8 @@ input[type="range"]::-moz-range-thumb {
   height: 80%;
   justify-content: space-around;
   align-items: center;
-  border-radius: 5vmin;
+  border-radius: 8vmin;
   border: solid 1vmin #67c5ff;
-
 }
 
 .panel-bottom {
