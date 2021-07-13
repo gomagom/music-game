@@ -46,7 +46,7 @@ class BackLane {
         sound.playSE(sound.seList[1]);    // bad判定ならばバッドSEを鳴らす
       }
       gameScore.calcScore(GRADE[i]);      // スコアを更新
-      JUDGE_LINE.drawGrade(GRADE[i]); // ノーツヒットのグレードを描画
+      JUDGE_LINE.setGrade(GRADE[i]); // ノーツヒットのグレードを描画
       TARGET[i].close();              // 判定済みのノーツ処理を停止
     }
   }

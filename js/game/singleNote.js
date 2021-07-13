@@ -54,7 +54,7 @@ class SingleNote {
     // 判定ラインから自身の判定ゾーンが過ぎた時点で処理
     if (this.reachTime < time.elapsed && !this.checkHit(note.hitRange[3])) {
       gameScore.calcScore(3);         // badとしてスコア加算
-      JUDGE_LINE.drawGrade(3);
+      JUDGE_LINE.setGrade(3);
       this.act = false;
     }
   }

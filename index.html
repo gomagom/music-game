@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <title>CLOCK NOTES</title>
   <link rel="stylesheet" href="css/style.css">
+  <link rel=”icon” href=“favicon.ico”>
 </head>
 <body>
   <div class="container column">
@@ -14,6 +15,7 @@
       <a href="#" class="btn" id="btn-setting">設定</a>
     </div>
   </div>
+
   <div id="Overlay">
     <div id="panel">
       <div id="panel-top">
@@ -26,6 +28,7 @@
             <span>SE</span><input type="range" id="SE-slider" min="0" max="100">
           </div>
         </div>
+
         <div class="container range">
           <div>
             <span>DELAY</span><input type="range" id="DELAY-slider" min="-300" max="300" value="0">
@@ -34,26 +37,29 @@
             <span>SPEED</span><input type="range" id="SPEED-slider" min="0" max="200" value="100" step="5">
           </div>
         </div>
+
         <div class="container lane">
           <div>
-            <span>LANE1:</span><a href="#" class="key-config">D</a>
-            <span>LANE2:</span><a href="#" class="key-config">F</a>
+            <span>LANE1:</span><a class="key-config">D</a>
+            <span>LANE2:</span><a class="key-config">F</a>
           </div>
           <div>
-            <span>LANE3:</span><a href="#" class="key-config">J</a>
-            <span>LANE4:</span><a href="#" class="key-config">K</a>
+            <span>LANE3:</span><a class="key-config">J</a>
+            <span>LANE4:</span><a class="key-config">K</a>
           </div>
           <div>
-            <span>PAUSE:</span><a href="#" class="key-config">P</a>
+            <span>PAUSE:</span><a class="key-config">P</a>
           </div>
         </div>
       </div>
+
       <div id="panel-bottom">
-        <a href="#" class="btn" id="btn-return">決定</a>
-        <a href="#" class="btn" id="btn-reset">リセット</a>
+        <a class="btn" id="btn-return">決定</a>
+        <a class="btn" id="btn-reset">リセット</a>
       </div>
     </div>
   </div>
+
   <script src="js/index/script.js"></script>
 </body>
 </html>

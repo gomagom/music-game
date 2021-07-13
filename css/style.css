@@ -146,6 +146,7 @@ input[type="range"]::-moz-range-thumb {
   background: #fff;
   border-radius: 1vh;
   transition: .3s;
+  cursor: pointer;
 }
 
 .key-config:hover {

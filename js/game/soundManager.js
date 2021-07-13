@@ -52,12 +52,8 @@ class soundManager {
     REQ.addEventListener('load', () => {
       ACTX.decodeAudioData(
         REQ.response,
-        function (data) {
-          soundKey.data = data;
-        },
-        function (e) {
-          alert(e.err);
-        }
+        data => soundKey.data = data,
+        e => alert(e.err)
       );
     });
     REQ.send();

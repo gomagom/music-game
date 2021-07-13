@@ -24,10 +24,20 @@ window.addEventListener('load', () => {
       storage.lane.forEach((val, index) => {
         KEY_CONFIG[index].textContent = val.toUpperCase();
       });
+    } else {
+      storage.lane = ['d', 'f', 'j', 'k'];
     }
+
     if (storage.pause) {
-      KEY_CONFIG[4].textContent = storage.pause.toUpperCase();
+      if (storage.pause === ' ') {
+        KEY_CONFIG[4].textContent = 'SPACE';
+      } else {
+        KEY_CONFIG[4].textContent = storage.pause.toUpperCase();
+      }
+    } else {
+      storage.pause = 'p';
     }
+
     if (storage.bgmVolume >= 0) {
       sound.bgmVolume.value = storage.bgmVolume * 200;
     }
@@ -37,8 +47,8 @@ window.addEventListener('load', () => {
     if (storage.delay >= -200) {
       DELAY.value = storage.delay;
     }
-    if (storage.speed >= 0) {
-      SPEED.value = storage.speed * 100;
+    if (storage.speedRatio >= 0) {
+      SPEED.value = storage.speedRatio * 100;
     }
   } catch (e) {
     window.location.href = '../../index.html';
@@ -46,17 +56,10 @@ window.addEventListener('load', () => {
 });
 
 window.addEventListener('beforeunload', () => {
-  storage.lane = [
-    KEY_CONFIG[0].textContent.toLowerCase(),
-    KEY_CONFIG[1].textContent.toLowerCase(),
-    KEY_CONFIG[2].textContent.toLowerCase(),
-    KEY_CONFIG[3].textContent.toLowerCase()
-  ];
-  storage.pause = KEY_CONFIG[4].textContent.toLowerCase();
   storage.bgmVolume = sound.bgmVolume.value / 200;
   storage.seVolume = sound.seVolume.value / 50;
   storage.delay = DELAY.value - 0;
-  storage.speed = SPEED.value / 100;
+  storage.speedRatio = SPEED.value / 100;
   localStorage['Music-Game'] = JSON.stringify(storage);
 });
 
@@ -66,6 +69,8 @@ RESET.addEventListener('click', () => {
   DELAY.value = 0;
   SPEED.value = 100;
   DEFAULT_KEY.forEach((val, index) => KEY_CONFIG[index].textContent = val.toUpperCase());
+  storage.lane = ['d', 'f', 'j', 'k'];
+  storage.pause = 'p';
 });
 
 document.addEventListener('keydown', e => {
@@ -75,6 +80,11 @@ document.addEventListener('keydown', e => {
         KEY_CONFIG[i].textContent = e.code.toUpperCase();
       } else {
         KEY_CONFIG[i].textContent = e.key.toUpperCase();
+      }
+      if (i === 4) {
+        storage.pause = e.key;
+      } else {
+        storage.lane[i] = e.key;
       }
     }
   }

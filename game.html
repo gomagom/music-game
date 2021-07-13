@@ -4,6 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <link rel="stylesheet" href="css/game.css">
+  <link rel=”icon” href=“favicon.ico”>
   <title>Play - CLOCK NOTES</title>
 </head>
 
@@ -29,8 +30,8 @@
         <div class="music-file">
           <div class="container" id="upload-music">
             <label class="upload-file">
-              <input type="file" id="upload-music-file" accept=".mp3">
-              <span>MP3ファイルを選択</span>
+              <input type="file" id="upload-music-file" accept="audio/*,video/*">
+              <span>楽曲ファイルを選択</span>
             </label>
           </div>
 
@@ -40,6 +41,7 @@
                 <option value="bgm_sample1.mp3" selected>サンプル1</option>
                 <option value="bgm_sample2.mp3">サンプル2</option>
                 <option value="bgm_sample3.mp3">サンプル3</option>
+                <option value="bgm_sample4.mp3">サンプル4</option>
               </select>
             </label>
           </div>
@@ -71,6 +73,7 @@
                 <option value="sample1" selected>サンプル1</option>
                 <option value="sample2">サンプル2</option>
                 <option value="sample3">サンプル3</option>
+                <option value="sample4">サンプル4</option>
               </select>
             </label>
           </div>
@@ -112,6 +115,7 @@
       </div>
     </div>
   </div>
+
   <script src="js/game/judgeLine.js"></script>
   <script src="js/game/backLane.js"></script>
   <script src="js/game/singleNote.js"></script>

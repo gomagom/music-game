@@ -19,6 +19,7 @@ function drawOnCanvas() {
   BACK_LANE.forEach(val => val.draw());
   JUDGE_LINE.draw();
   BACK_LANE.forEach(val => val.drawNote());
+  JUDGE_LINE.drawGrade()
   drawCombo();
 }
 

@@ -60,7 +60,6 @@ const CTX = CAN.getContext("2d");
 const CANVAS_W = 2160;
 const CANVAS_H = 2160;
 const LINE_WIDTH = 10;
-window.AudioContext = window.AudioContext || window.webkitAudioContext;
 const ACTX = new AudioContext();
 const JUDGE_LINE = new JudgeLine();
 const gameScore = new GameScoreManager();
@@ -94,5 +93,6 @@ function showResult() {
 }
 
 window.addEventListener('load', () => {
+  importLocalStorage();
   gameInit();
 });

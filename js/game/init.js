@@ -1,36 +1,11 @@
-// ゲームの初期化を行う
-function gameInit() {
-  element.uploadMusicType.addEventListener('change', () => {
-    if (element.uploadMusicType.checked) {
-      element.uploadMusic.style.display = 'flex';
-      element.selectMusic.style.display = 'none';
-    } else {
-      element.uploadMusic.style.display = 'none';
-      element.selectMusic.style.display = 'flex';
-    }
-  });
-  element.uploadCSVType.addEventListener('change', () => {
-    if (element.uploadCSVType.checked) {
-      element.uploadCSV.style.display = 'flex';
-      element.selectCSV.style.display = 'none';
-    } else {
-      element.uploadCSV.style.display = 'none';
-      element.selectCSV.style.display = 'flex';
-    }
-  });
-  element.uploadMusicFile.addEventListener('change', () => {
-    element.uploadStr[1].textContent = element.uploadMusicFile.files[0].name;
-  });
-  element.uploadCSVFile.addEventListener('change', () => {
-    element.uploadStr[3].textContent = element.uploadCSVFile.files[0].name;
-  });
-
+// ローカルストレージの情報を取り出し、反映させる
+function importLocalStorage() {
   try {
     storage = JSON.parse(localStorage['Music-Game'] || '{}');
     for (const key in storage) {
       if (key === 'lane') {
         inputKey[key] = storage[key];
-      } else if (key === 'delay' || key === 'speed') {
+      } else if (key === 'delay' || key === 'speedRatio') {
         note[key] = storage[key];
       } else if (key === 'pause') {
         inputKey[key] = storage[key];
@@ -42,15 +17,55 @@ function gameInit() {
     window.location.href = '../../index.html';
   }
 
-  document.getElementById('info').textContent = `Pause : ${inputKey.pause.toUpperCase()}`;
+  let pauseKeyStr;
+  if (inputKey.pause === ' ') {
+    pauseKeyStr = 'SPACE';
+  } else {
+    pauseKeyStr = inputKey.pause.toUpperCase();
+  }
+  document.getElementById('info').textContent = 'Pause : ' + pauseKeyStr;
   element.BGMSlider.value = sound.bgmVolume * 200;
   element.SESlider.value = sound.seVolume * 50;
+}
+
+// ゲームの初期化を行う
+function gameInit() {
+  element.uploadMusicType.addEventListener('change', () => {
+    if (element.uploadMusicType.checked) {
+      element.uploadMusic.style.display = 'flex';
+      element.selectMusic.style.display = 'none';
+    } else {
+      element.uploadMusic.style.display = 'none';
+      element.selectMusic.style.display = 'flex';
+    }
+  });
+
+  element.uploadCSVType.addEventListener('change', () => {
+    if (element.uploadCSVType.checked) {
+      element.uploadCSV.style.display = 'flex';
+      element.selectCSV.style.display = 'none';
+    } else {
+      element.uploadCSV.style.display = 'none';
+      element.selectCSV.style.display = 'flex';
+    }
+  });
+
+  element.uploadMusicFile.addEventListener('change', () => {
+    element.uploadStr[1].textContent = element.uploadMusicFile.files[0].name;
+  });
+
+  element.uploadCSVFile.addEventListener('change', () => {
+    element.uploadStr[3].textContent = element.uploadCSVFile.files[0].name;
+  });
 
   CAN.width = CANVAS_W;
   CAN.height = CANVAS_H;
   CTX.lineWidth = LINE_WIDTH;
 
-  BACK_LANE.forEach(val => val.draw());
+  BACK_LANE.forEach((val, index) => {
+    val.key = inputKey.lane[index];
+    val.draw();
+  });
   JUDGE_LINE.draw();
 
   // スタートボタンが押されたら発火
