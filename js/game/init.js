@@ -2,17 +2,12 @@
 function importLocalStorage() {
   try {
     storage = JSON.parse(localStorage['Music-Game'] || '{}');
-    for (const key in storage) {
-      if (key === 'lane') {
-        inputKey[key] = storage[key];
-      } else if (key === 'delay' || key === 'speedRatio') {
-        note[key] = storage[key];
-      } else if (key === 'pause') {
-        inputKey[key] = storage[key];
-      } else {
-        sound[key] = storage[key];
-      }
-    }
+    inputKey.lane = storage.lane ?? inputKey.lane;
+    inputKey.pause = storage.pause ?? inputKey.pause;
+    note.delay = storage.delay ?? note.delay;
+    note.speedRatio = storage.speedRatio ?? note.speedRatio;
+    sound.bgmVolume = storage.bgmVolume ?? sound.bgmVolume;
+    sound.seVolume = storage.seVolume ?? sound.seVolume;
   } catch (e) {
     window.location.href = '../../index.html';
   }
@@ -61,6 +56,8 @@ function gameInit() {
   CAN.width = CANVAS_W;
   CAN.height = CANVAS_H;
   CTX.lineWidth = LINE_WIDTH;
+  CTX.textAlign = 'center';
+  CTX.textBaseline = 'middle';
 
   BACK_LANE.forEach((val, index) => {
     val.key = inputKey.lane[index];
@@ -103,12 +100,8 @@ function gameStart() {
 // ゲーム開始時の説明文を表示
 function drawDesc() {
   const DESC_TEXT = ['Press any key', 'to start'];
-  CTX.save();
   CTX.font = '200px Arial Black';
   CTX.fillStyle = '#e4007f';
-  CTX.textAlign = 'center';
-  CTX.textBaseline = 'middle';
   CTX.fillText(DESC_TEXT[0], CANVAS_W / 2, CANVAS_H / 2 - 150);
   CTX.fillText(DESC_TEXT[1], CANVAS_W / 2, CANVAS_H / 2 + 150);
-  CTX.restore();
 }

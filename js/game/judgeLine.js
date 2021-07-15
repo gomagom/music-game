@@ -21,14 +21,9 @@ class JudgeLine {
   // ヒットグレードを描画
   drawGrade() {
     if (this.targetTime > time.elapsed) {
-      CTX.save();
-      CTX.beginPath();
       CTX.font = '200px Arial Black';
-      CTX.textAlign = 'center';
-      CTX.textBaseline = 'middle';
       CTX.fillStyle = this.textColor;
       CTX.fillText(this.text, CANVAS_W / 2, this.y - 200);
-      CTX.restore();
     }
   }
 
@@ -40,7 +35,7 @@ class JudgeLine {
       [153, 0, 204, 0.7],
       [51, 204, 51, 0.8],
       [51, 51, 51, 0.7]
-    ]
+    ];
     this.targetTime = time.elapsed + this.targetTimeL;  // 実行されてから一定時間表示させる
     this.text = STRING[grade];
     this.textColor = 'rgba(' + COLOR[grade] + ')';

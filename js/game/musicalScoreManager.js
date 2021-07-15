@@ -16,7 +16,7 @@ class musicalScoreManager {
     this.wholeScore.sort((first, second) => first[3] - second[3]);    // 到達時間順に並べ替える
     time.end = this.wholeScore[this.wholeScore.length - 1][3] + 1500; // 譜面の終了時間を取得
 
-    this.cutScore(); // 譜面をレーン毎のデータにする
+    this.cutScore();  // 譜面をレーン毎のデータにする
 
     return 1;
   }
@@ -27,9 +27,7 @@ class musicalScoreManager {
       const FILE = element.uploadCSVFile;
       const READER = new FileReader();
       READER.readAsText(FILE.files[0]);
-      READER.addEventListener('load', () => {
-        resolve(this.convertCSVtoArray(READER.result));
-      });
+      READER.addEventListener('load', () => resolve(this.convertCSVtoArray(READER.result)));
     });
   }
 
@@ -40,9 +38,7 @@ class musicalScoreManager {
       const REQ = new XMLHttpRequest();                         // HTTPでファイルを読み込むためのXMLHttpRrequestオブジェクトを生成
       REQ.open('get', 'sheet/' + SELECT.value + '.csv', true);  // アクセスするファイルを指定
       REQ.send(null);                                           // HTTPリクエストの発行
-      REQ.addEventListener('load', () => {
-        resolve(this.convertCSVtoArray(REQ.responseText));      // 読み込んだ文字データを関数に渡して終了
-      });
+      REQ.addEventListener('load', () => resolve(this.convertCSVtoArray(REQ.responseText)));  // 読み込んだ文字データを関数に渡して終了
     });
   }
 

@@ -19,7 +19,7 @@ function drawOnCanvas() {
   BACK_LANE.forEach(val => val.draw());
   JUDGE_LINE.draw();
   BACK_LANE.forEach(val => val.drawNote());
-  JUDGE_LINE.drawGrade()
+  JUDGE_LINE.drawGrade();
   drawCombo();
 }
 
@@ -28,14 +28,9 @@ function drawCombo() {
   if (gameScore.combo < 2) {
     return;
   }
-  CTX.save();
-  CTX.beginPath();
   CTX.font = '300px Arial Black';
-  CTX.textAlign = 'center';
-  CTX.textBaseline = 'middle';
   CTX.fillStyle = 'rgba(255, 204, 0, 0.9)';
   CTX.fillText(gameScore.combo, CANVAS_W / 2, CANVAS_H / 2);
-  CTX.restore();
 }
 
 // ゲーム内の経過時間と稼働時間を計算

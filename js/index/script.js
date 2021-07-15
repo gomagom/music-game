@@ -20,36 +20,21 @@ RETURN.addEventListener('click', () => OVERLAY.style.display = "none");
 window.addEventListener('load', () => {
   try {
     storage = JSON.parse(localStorage['Music-Game'] || '{}');
-    if (storage.lane) {
-      storage.lane.forEach((val, index) => {
-        KEY_CONFIG[index].textContent = val.toUpperCase();
-      });
+
+    storage.lane = storage.lane || ['d', 'f', 'j', 'k'];
+    storage.lane.forEach((val, index) => KEY_CONFIG[index].textContent = val.toUpperCase());
+
+    storage.pause = storage.pause || 'p';
+    if (storage.pause === ' ') {
+      KEY_CONFIG[4].textContent = 'SPACE';
     } else {
-      storage.lane = ['d', 'f', 'j', 'k'];
+      KEY_CONFIG[4].textContent = storage.pause.toUpperCase();
     }
 
-    if (storage.pause) {
-      if (storage.pause === ' ') {
-        KEY_CONFIG[4].textContent = 'SPACE';
-      } else {
-        KEY_CONFIG[4].textContent = storage.pause.toUpperCase();
-      }
-    } else {
-      storage.pause = 'p';
-    }
-
-    if (storage.bgmVolume >= 0) {
-      sound.bgmVolume.value = storage.bgmVolume * 200;
-    }
-    if (storage.seVolume >= 0) {
-      sound.seVolume.value = storage.seVolume * 50;
-    }
-    if (storage.delay >= -200) {
-      DELAY.value = storage.delay;
-    }
-    if (storage.speedRatio >= 0) {
-      SPEED.value = storage.speedRatio * 100;
-    }
+    sound.bgmVolume.value = storage.bgmVolume * 200 ?? sound.bgmVolume.value;
+    sound.seVolume.value = storage.seVolume * 50 ?? sound.seVolume.value;
+    DELAY.value = storage.delay ?? DELAY.value;
+    SPEED.value = storage.speedRatio * 100 ?? SPEED.value;
   } catch (e) {
     window.location.href = '../../index.html';
   }
@@ -91,7 +76,5 @@ document.addEventListener('keydown', e => {
 });
 
 for (let i = 0; i < KEY_CONFIG.length; i++) {
-  KEY_CONFIG[i].addEventListener('click', () => {
-    KEY_CONFIG[i].textContent = 'ㅤ';
-  });
+  KEY_CONFIG[i].addEventListener('click', () => KEY_CONFIG[i].textContent = 'ㅤ');
 }

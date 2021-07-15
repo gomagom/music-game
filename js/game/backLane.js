@@ -54,18 +54,11 @@ class BackLane {
   draw() {
     CTX.fillStyle = this.color;
     CTX.fillRect(this.x, 0, this.width, CANVAS_H);
-
-    CTX.save();
-    CTX.beginPath();
     CTX.font = '200px Arial Black';
-    CTX.textAlign = 'center';
-    CTX.textBaseline = 'middle';
     CTX.strokeStyle = 'rgba(' + this.actColor + ', 0.7)';
     CTX.strokeText(this.key.toUpperCase(), this.x + this.width / 2, CANVAS_H - 160);
-    CTX.restore();
 
     if (inputKey.status[this.key]) {
-      CTX.beginPath();
       const GRAD = CTX.createLinearGradient(this.x, JUDGE_LINE.centerY, this.x, CANVAS_H / 3);
       GRAD.addColorStop(0.0, 'rgba(' + this.actColor + ', 0.6)');
       GRAD.addColorStop(1.0, 'rgba(' + this.actColor + ', 0)');
