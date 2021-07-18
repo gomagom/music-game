@@ -1,39 +1,64 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width">
-    <title>CLOCK NOTES </title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
-        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-
-    <link rel="stylesheet" href="css/style.css">
+  <meta charset="UTF-8">
+  <title>CLOCK NOTES</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
-
 <body>
-    <!--画像を画面いっぱいに表示し、その画像をクリックすることで次の画面へ遷移-->
-    <div class="photo"><a href="#"><img src=" "></a></div>
-    <!--設定画面へのボタン-->
-    <div class="option-btn">
-        <!--iタグ -> 文字がイタリック体になる-->
-        <a href='editor.html' class="btn btn-radius-solid ">設定<i class="fas fa-angle-right fa-position-right"></i></a>
-
-        <!--<a class="btn" href="#" role="button">設定</a>-->
+  <div class="container column">
+    <h1>CLOCK NOTES</h1>
+    <div>
+      <a href="game.html" class="btn">ゲームを遊ぶ</a>
+      <a href="editor.html" class="btn">譜面を作る</a>
+      <a class="btn" id="btn-setting">設定</a>
     </div>
-    <div class="title">
-        <div class="animetion">
-            <header>
-                <h1>CLOCK NOTES</h1>
+  </div>
 
-            </header>
-            <div class="START">
-                <!--スタートボタンの画像を入れる-->
-                <img src="">
-                <!--画像が入るまでこっち-->
-                <a class="btn btn-" href='game.html' role="button">Push to Start!</a>
-            </div>
+  <div id="Overlay">
+    <div id="panel">
+      <div id="panel-top">
+        <div>設定</div>
+        <div class="container range">
+          <div>
+            <span>BGM</span><input type="range" id="BGM-slider" min="0" max="100">
+          </div>
+          <div>
+            <span>SE</span><input type="range" id="SE-slider" min="0" max="100">
+          </div>
         </div>
+
+        <div class="container range">
+          <div>
+            <span>DELAY</span><input type="range" id="DELAY-slider" min="-300" max="300" value="0">
+          </div>
+          <div>
+            <span>SPEED</span><input type="range" id="SPEED-slider" min="0" max="200" value="100" step="5">
+          </div>
+        </div>
+
+        <div class="container lane">
+          <div>
+            <span>LANE1:</span><a class="key-config">D</a>
+            <span>LANE2:</span><a class="key-config">F</a>
+          </div>
+          <div>
+            <span>LANE3:</span><a class="key-config">J</a>
+            <span>LANE4:</span><a class="key-config">K</a>
+          </div>
+          <div>
+            <span>PAUSE:</span><a class="key-config">P</a>
+          </div>
+        </div>
+      </div>
+
+      <div id="panel-bottom">
+        <a class="btn" id="btn-return">決定</a>
+        <a class="btn" id="btn-reset">リセット</a>
+      </div>
     </div>
+  </div>
+
+  <script src="js/index/script.js"></script>
 </body>
 </html>
