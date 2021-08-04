@@ -109,4 +109,3 @@ GitHub Pagesで公開してます。
 # Author
 
 - Twitter : <https://twitter.com/gomatamago_0>
-- Twitter : <https://twitter.com/g75hca>
