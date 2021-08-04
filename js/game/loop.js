@@ -18,7 +18,7 @@ function drawOnCanvas() {
   CTX.clearRect(0, 0, CANVAS_W, CANVAS_H);
   BACK_LANE.forEach(val => val.draw());
   JUDGE_LINE.draw();
-  BACK_LANE.forEach(val => val.drawNote());
+  // BACK_LANE.forEach(val => val.drawNote());
   JUDGE_LINE.drawGrade();
   drawCombo();
 }

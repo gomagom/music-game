@@ -14,24 +14,24 @@ class SingleNote {
   }
 
   // 自身のヒットグレードを判定し、返却
-  getGrade() {
-    let grade = 3;
-    for (let i = 2; i >= 0; i--) {
-      if (this.checkHit(note.hitRange[i])) {
-        grade = i;
-      }
-    }
-    return grade;
-  }
+  // getGrade() {
+  //   let grade = 3;
+  //   for (let i = 2; i >= 0; i--) {
+  //     if (this.checkHit(note.hitRange[i])) {
+  //       grade = i;
+  //     }
+  //   }
+  //   return grade;
+  // }
 
   // 自身がヒットしているか判定
-  checkHit(range) {
-    if (this.act && Math.abs(time.elapsed - this.reachTime) <= range) {
-      return true;
-    } else {
-      return false;
-    }
-  }
+  // checkHit(range) {
+  //   if (this.act && Math.abs(time.elapsed - this.reachTime) <= range) {
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // }
 
   // canvas内に入った段階で描画フラグを立てる
   updateShow() {
@@ -46,33 +46,33 @@ class SingleNote {
 
   // 自身の状態を確認し、判定ラインを通り過ぎた場合に判定処理を止める
   update() {
-    this.updateShow();
-    if (!this.act) {
-      return;
-    }
+    // this.updateShow();
+    // if (!this.act) {
+    //   return;
+    // }
 
-    // 判定ラインから自身の判定ゾーンが過ぎた時点で処理
-    if (this.reachTime < time.elapsed && !this.checkHit(note.hitRange[3])) {
-      gameScore.calcScore(3);         // badとしてスコア加算
-      JUDGE_LINE.setGrade(3);
-      this.act = false;
-    }
+    // // 判定ラインから自身の判定ゾーンが過ぎた時点で処理
+    // if (this.reachTime < time.elapsed && !this.checkHit(note.hitRange[3])) {
+    //   gameScore.calcScore(3);         // badとしてスコア加算
+    //   JUDGE_LINE.setGrade(3);
+    //   this.act = false;
+    // }
   }
 
-  draw(x) {
-    if (this.show) {
-      this.centerY = JUDGE_LINE.centerY - (this.reachTime - time.elapsed) * this.speed;
-      CTX.fillStyle = this.bodyColor;
-      CTX.fillRect(x, this.centerY - this.height / 2, this.width, this.height);
-      CTX.strokeStyle = this.frameColor;
-      CTX.strokeRect(
-        x + LINE_WIDTH / 2,
-        this.centerY - this.height / 2 + LINE_WIDTH / 2,
-        this.width - LINE_WIDTH,
-        this.height - LINE_WIDTH
-      );
-    }
-  }
+  // draw(x) {
+  //   if (this.show) {
+  //     this.centerY = JUDGE_LINE.centerY - (this.reachTime - time.elapsed) * this.speed;
+  //     CTX.fillStyle = this.bodyColor;
+  //     CTX.fillRect(x, this.centerY - this.height / 2, this.width, this.height);
+  //     CTX.strokeStyle = this.frameColor;
+  //     CTX.strokeRect(
+  //       x + LINE_WIDTH / 2,
+  //       this.centerY - this.height / 2 + LINE_WIDTH / 2,
+  //       this.width - LINE_WIDTH,
+  //       this.height - LINE_WIDTH
+  //     );
+  //   }
+  // }
 
   // 自身の処理を止める
   close() {
