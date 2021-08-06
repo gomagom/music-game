@@ -10,31 +10,7 @@ class GameScoreManager {
   }
 
   calcScore(grade) {
-    switch (grade) {
-      case 0:
-        this.point += 100 + this.combo;
-        this.perfect++;
-        this.combo++;
-        break;
-      case 1:
-        this.point += 80 + this.combo * 0.8;
-        this.great++;
-        this.combo++;
-        break;
-      case 2:
-        this.point += 50 + this.combo * 0.5;
-        this.good++;
-        this.combo++;
-        break;
-      case 3:
-        this.bad++;
-        this.combo = 0;
-        break;
-    }
-
-    if (this.maxCombo < this.combo) {
-      this.maxCombo = this.combo;
-    }
+    // ここに記事のコードを書く
   }
 
   reset() {
