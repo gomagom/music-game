@@ -10,7 +10,7 @@ class GameScoreManager {
   }
 
   calcScore(grade) {
-    // ここに記事のコードを書く
+    /* ここにコードを挿入してください */
   }
 
   reset() {

@@ -11,15 +11,15 @@ class BackLane {
   }
 
   generateNote(data) {
-    // ここに記事のコードを書く
+    /* ここにコードを挿入してください */
   }
 
   update() {
-    // ここに記事のコードを書く
+    /* ここにコードを挿入してください */
   }
 
   judge() {
-    // ここに記事のコードを書く
+    /* ここにコードを挿入してください */
   }
 
   draw() {
@@ -29,10 +29,10 @@ class BackLane {
     CTX.strokeStyle = 'rgba(' + this.actColor + ', 0.7)';
     CTX.strokeText(this.key.toUpperCase(), this.x + this.width / 2, CANVAS_H - 160);
 
-    // ここに記事のコードを書く
+    /* ここにコードを挿入してください */
   }
 
   drawNote() {
-    // ここに記事のコードを書く
+    /* ここにコードを挿入してください */
   }
 }
